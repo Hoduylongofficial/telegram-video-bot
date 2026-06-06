@@ -1,0 +1,124 @@
+<template id="beat-1-hook-template">
+  <div id="beat-1-hook" data-composition-id="beat-1-hook" data-width="1080" data-height="1920">
+    <style>
+      #beat-1-hook {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #030712;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 160px 80px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+      }
+      .alert-icon {
+        width: 180px;
+        height: 180px;
+        margin-bottom: 80px;
+        filter: drop-shadow(0 0 30px rgba(255, 29, 88, 0.6));
+      }
+      .headline {
+        font-family: sans-serif;
+        font-weight: 800;
+        font-size: 80px;
+        line-height: 1.1;
+        color: #f1f5f9;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+      }
+      .headline span {
+        display: block;
+      }
+      .highlight {
+        color: #ff1d58;
+        text-shadow: 0 0 40px rgba(255, 29, 88, 0.4);
+      }
+      .glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: #ff1d58;
+        filter: blur(160px);
+        opacity: 0.18;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+      }
+    </style>
+
+    <div class="glow" data-layout-allow-overflow></div>
+    <div class="content" data-layout-allow-overflow>
+      <img class="alert-icon" src="capture/assets/svgs/lucide-octagon-alert.svg" alt="Alert" />
+      <h1 class="headline">
+        <!-- Spans generated dynamically below -->
+      </h1>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      
+      // Dynamic content and timings
+      const vars = (window.__variables && window.__variables.beat1) || {
+        title: "Is Your Password Exposed?",
+        highlight: "Exposed?"
+      };
+      const duration = (window.__timings && window.__timings.scene1.duration) || 3.7;
+
+      // Populate headline dynamically
+      const headlineEl = document.querySelector("#beat-1-hook .headline");
+      if (headlineEl) {
+        headlineEl.innerHTML = "";
+        const words = vars.title.split(" ");
+        words.forEach((word, index) => {
+          const span = document.createElement("span");
+          span.textContent = word;
+          span.className = `word-${index + 1}`;
+          if (vars.highlight && word.toLowerCase().includes(vars.highlight.toLowerCase())) {
+            span.classList.add("highlight");
+          }
+          headlineEl.appendChild(span);
+          headlineEl.appendChild(document.createTextNode(" "));
+        });
+      }
+
+      const tl = gsap.timeline({ paused: true });
+
+      // Ambient glow breathing & Camera slow dolly-in
+      const animDuration = Math.max(duration - 0.2, 1);
+      tl.to("#beat-1-hook .glow", { scale: 1.15, opacity: 0.22, duration: animDuration, yoyo: true, repeat: 0, ease: "sine.inOut" }, 0);
+      tl.to("#beat-1-hook .content", { scale: 1.05, duration: animDuration, ease: "sine.inOut" }, 0);
+      
+      // Entrances (Offset from t=0)
+      tl.from("#beat-1-hook .alert-icon", { y: -60, scale: 0.8, opacity: 0, duration: 0.7, ease: "back.out(1.5)" }, 0.2);
+      
+      // Dynamically animate words
+      const words = vars.title.split(" ");
+      words.forEach((word, index) => {
+        const selector = `#beat-1-hook .word-${index + 1}`;
+        const startTime = 0.5 + index * 0.15;
+        if (index === words.length - 1) {
+          tl.from(selector, { opacity: 0, scale: 0.85, duration: 0.6, ease: "back.out(2.0)" }, startTime);
+        } else {
+          tl.from(selector, { opacity: 0, y: 30, duration: 0.4 }, startTime);
+        }
+      });
+
+      window.__timelines["beat-1-hook"] = tl;
+    </script>
+  </div>
+</template>

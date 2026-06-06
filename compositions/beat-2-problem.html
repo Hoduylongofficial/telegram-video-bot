@@ -1,0 +1,212 @@
+<template id="beat-2-problem-template">
+  <div id="beat-2-problem" data-composition-id="beat-2-problem" data-width="1080" data-height="1920">
+    <style>
+      #beat-2-problem {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #030712;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: 160px 80px;
+        position: relative;
+        z-index: 10;
+      }
+      .header-text {
+        font-family: monospace;
+        font-weight: 700;
+        font-size: 24px;
+        color: #ff1d58;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .terminal-card {
+        background: #0f172b;
+        border: 1px solid #1d293d;
+        border-radius: 16px;
+        width: 100%;
+        height: 700px;
+        margin-top: 40px;
+        padding: 40px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+      .terminal-scroll {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: absolute;
+        width: calc(100% - 80px);
+        top: 40px;
+      }
+      .terminal-row {
+        font-family: monospace;
+        font-size: 32px;
+        color: #90a1b9;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px dashed rgba(144, 161, 185, 0.15);
+        padding-bottom: 12px;
+      }
+      .terminal-leak-name {
+        color: #ff1d58;
+        font-weight: 700;
+      }
+      .stat-section {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .stat-number {
+        font-family: monospace;
+        font-weight: 800;
+        font-size: 130px;
+        color: #f1f5f9;
+        line-height: 1;
+        letter-spacing: -0.05em;
+        text-shadow: 0 0 40px rgba(241, 245, 249, 0.15);
+      }
+      .stat-label {
+        font-family: sans-serif;
+        font-size: 30px;
+        color: #90a1b9;
+        margin-top: 15px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .bg-fingerprint {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        opacity: 0.05;
+        z-index: 1;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+      .glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: #0891b2;
+        filter: blur(160px);
+        opacity: 0.12;
+        bottom: 10%;
+        right: -100px;
+        z-index: 1;
+        pointer-events: none;
+      }
+    </style>
+
+    <div class="glow" data-layout-allow-overflow></div>
+    <img class="bg-fingerprint" src="capture/assets/svgs/lucide-fingerprint.svg" alt="Fingerprint" data-layout-allow-overflow />
+    
+    <div class="content" data-layout-allow-overflow>
+      <div>
+        <div class="header-text">Database Exposure</div>
+        <div class="terminal-card" data-layout-allow-overflow>
+          <div class="terminal-scroll">
+            <!-- Terminal rows generated dynamically below -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-section">
+        <div class="stat-number"><span class="counter-num">0.0</span>B</div>
+        <div class="stat-label">Compromised Indexes Loaded</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      
+      // Dynamic content and timings
+      const vars = (window.__variables && window.__variables.beat2) || {
+        header: "Database Exposure",
+        stat: "14.8",
+        unit: "B",
+        label: "Compromised Indexes Loaded",
+        rows: [
+          { email: "j.smi***@gmail.com", leak: "Adobe 153M" },
+          { email: "admin@corporatelink.net", leak: "LinkedIn 164M" },
+          { email: "t.jack***@yahoo.com", leak: "Yahoo 3B" },
+          { email: "alex.v***@gmail.com", leak: "Canva 137M" },
+          { email: "corp_sec***@shield.net", leak: "Dropbox 68M" },
+          { email: "m.vander***@outlook.com", leak: "Zynga 173M" },
+          { email: "sys_db***@main-portal.com", leak: "Adobe 153M" }
+        ]
+      };
+      const duration = (window.__timings && window.__timings.scene2.duration) || 3.7;
+
+      // Populate layout dynamically
+      const headerEl = document.querySelector("#beat-2-problem .header-text");
+      if (headerEl) headerEl.textContent = vars.header;
+
+      const labelEl = document.querySelector("#beat-2-problem .stat-label");
+      if (labelEl) labelEl.textContent = vars.label;
+
+      const statNumberEl = document.querySelector("#beat-2-problem .stat-number");
+      if (statNumberEl) {
+        statNumberEl.innerHTML = `<span class="counter-num">0.0</span>${vars.unit}`;
+      }
+
+      const scrollEl = document.querySelector("#beat-2-problem .terminal-scroll");
+      if (scrollEl) {
+        scrollEl.innerHTML = "";
+        vars.rows.forEach(row => {
+          const rowEl = document.createElement("div");
+          rowEl.className = "terminal-row";
+          rowEl.innerHTML = `<span>${row.email}</span><span class="terminal-leak-name">${row.leak}</span>`;
+          scrollEl.appendChild(rowEl);
+        });
+      }
+
+      const tl = gsap.timeline({ paused: true });
+
+      // Fingerprint rotation & Terminal dolly-in
+      const animDuration = Math.max(duration - 0.4, 1);
+      tl.to("#beat-2-problem .bg-fingerprint", { rotation: 30, duration: animDuration, ease: "none" }, 0);
+      tl.to("#beat-2-problem .content", { scale: 1.04, duration: animDuration, ease: "sine.inOut" }, 0);
+
+      // Entrances
+      tl.from("#beat-2-problem .terminal-card", { y: 100, opacity: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.from("#beat-2-problem .stat-section", { scale: 0.85, opacity: 0, duration: 0.6, ease: "back.out(1.2)" }, 0.3);
+
+      // Terminal list scrolling upwards
+      const scrollHeight = vars.rows.length * 56 - 450; // estimate scroll distance
+      const scrollDistance = scrollHeight > 0 ? -scrollHeight : -160;
+      tl.to("#beat-2-problem .terminal-scroll", { y: scrollDistance, duration: Math.max(animDuration - 0.3, 1), ease: "power1.inOut" }, 0.3);
+
+      // Numeric count-up
+      const countObj = { val: 0.0 };
+      const targetVal = parseFloat(vars.stat);
+      tl.to(countObj, {
+        val: targetVal,
+        duration: Math.max(animDuration - 0.8, 1),
+        ease: "power2.out",
+        onUpdate: function() {
+          const el = document.querySelector("#beat-2-problem .counter-num");
+          if (el) el.textContent = countObj.val.toFixed(1);
+        }
+      }, 0.5);
+
+      window.__timelines["beat-2-problem"] = tl;
+    </script>
+  </div>
+</template>

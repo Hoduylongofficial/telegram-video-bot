@@ -1,0 +1,262 @@
+<template id="beat-3-solution-template">
+  <div id="beat-3-solution" data-composition-id="beat-3-solution" data-width="1080" data-height="1920">
+    <style>
+      #beat-3-solution {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #030712;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 80px;
+        position: relative;
+        z-index: 10;
+        gap: 60px;
+      }
+      .header-text {
+        font-family: monospace;
+        font-weight: 700;
+        font-size: 24px;
+        color: #00bc7d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .panel-card {
+        background: #0f172b;
+        border: 1px solid #1d293d;
+        border-radius: 16px;
+        width: 100%;
+        padding: 50px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        position: relative;
+      }
+      .input-wrapper {
+        background: #030712;
+        border: 1px solid #1d293d;
+        border-radius: 12px;
+        height: 100px;
+        width: 100%;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .input-placeholder {
+        font-family: monospace;
+        font-size: 32px;
+        color: #90a1b9;
+      }
+      .cursor {
+        width: 4px;
+        height: 40px;
+        background: #00bc7d;
+        margin-left: 6px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .encryption-display {
+        border-top: 1px dashed rgba(144, 161, 185, 0.15);
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        opacity: 0;
+      }
+      .hash-label {
+        font-family: monospace;
+        font-size: 20px;
+        color: #90a1b9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .hash-value {
+        font-family: monospace;
+        font-size: 28px;
+        color: #f1f5f9;
+        background: #030712;
+        padding: 20px;
+        border-radius: 8px;
+        word-break: break-all;
+        border: 1px solid rgba(0, 188, 125, 0.15);
+      }
+      .status-badge {
+        background: rgba(0, 188, 125, 0.1);
+        border: 1px solid #00bc7d;
+        border-radius: 6px;
+        padding: 10px 20px;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0;
+      }
+      .status-badge span {
+        font-family: monospace;
+        font-size: 22px;
+        color: #00bc7d;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .lock-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        height: 180px;
+        margin-bottom: 20px;
+      }
+      .lock-icon {
+        width: 160px;
+        height: 160px;
+        filter: drop-shadow(0 0 30px rgba(0, 188, 125, 0.4));
+      }
+      .key-icon {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 40px;
+        left: 280px;
+        opacity: 0;
+      }
+      .glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: #00bc7d;
+        filter: blur(160px);
+        opacity: 0.15;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+      }
+    </style>
+
+    <div class="glow" data-layout-allow-overflow></div>
+    
+    <div class="content">
+      <div class="lock-container">
+        <img class="lock-icon" src="capture/assets/svgs/lucide-lock.svg" alt="Lock" />
+        <img class="key-icon" src="capture/assets/svgs/lucide-key-round.svg" alt="Key" />
+      </div>
+      
+      <div class="header-text">Cryptographic Check</div>
+      
+      <div class="panel-card">
+        <div class="input-wrapper">
+          <span class="input-placeholder"></span><span class="cursor"></span>
+        </div>
+        
+        <div class="encryption-display">
+          <div class="hash-label">Local SHA-256 Hash</div>
+          <div class="hash-value">5e883f98892919347d1756228466bb414b490d4684504121ec37f14302c44186</div>
+        </div>
+        
+        <div class="status-badge">
+          <span>Zero Logs Policy Verified</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      // Self-instantiate if loaded standalone (e.g. by the linter) so elements resolve
+      if (!document.getElementById("beat-3-solution")) {
+        const template = document.getElementById("beat-3-solution-template");
+        if (template) {
+          document.body.innerHTML += template.innerHTML;
+        }
+      }
+
+      // Dynamic variables and timings
+      const vars = (window.__variables && window.__variables.beat3) || {
+        header: "Cryptographic Check",
+        email: "demo@corporatelink.net",
+        hash: "5e883f98892919347d1756228466bb414b490d4684504121ec37f14302c44186",
+        badge: "Zero Logs Policy Verified"
+      };
+      const duration = (window.__timings && window.__timings.scene3.duration) || 5.1;
+
+      // Populate layout dynamically
+      const headerEl = document.querySelector("#beat-3-solution .header-text");
+      if (headerEl) headerEl.textContent = vars.header;
+
+      const hashValueEl = document.querySelector("#beat-3-solution .hash-value");
+      if (hashValueEl) hashValueEl.textContent = vars.hash;
+
+      const badgeEl = document.querySelector("#beat-3-solution .status-badge span");
+      if (badgeEl) badgeEl.textContent = vars.badge;
+
+      const tl = gsap.timeline({ paused: true });
+
+      // Ambient glow breathing & slow dolly-out
+      const animDuration = Math.max(duration - 0.4, 1);
+      tl.to("#beat-3-solution .glow", { scale: 1.2, opacity: 0.2, duration: animDuration, yoyo: true, repeat: 0, ease: "sine.inOut" }, 0);
+      tl.to("#beat-3-solution .content", { scale: 0.96, duration: animDuration, ease: "sine.inOut" }, 0);
+
+      // Lock icon slide in
+      tl.from("#beat-3-solution .lock-icon", { y: 60, scale: 0.8, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, 0);
+      tl.from("#beat-3-solution .header-text", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
+      tl.from("#beat-3-solution .panel-card", { y: 80, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+
+      // Typing simulation
+      const textVal = vars.email;
+      const typeObj = { charCount: 0 };
+      const typingDuration = Math.min(1.2, animDuration * 0.35);
+      const typingStart = 0.5;
+      const typingEnd = typingStart + typingDuration;
+      
+      tl.to(typeObj, {
+        charCount: textVal.length,
+        duration: typingDuration,
+        ease: "none",
+        onUpdate: function() {
+          const el = document.querySelector("#beat-3-solution .input-placeholder");
+          if (el) {
+            el.textContent = textVal.slice(0, Math.round(typeObj.charCount));
+          }
+        }
+      }, typingStart);
+
+      // Blink cursor
+      const blinkCount = Math.ceil(animDuration / 0.4);
+      tl.to("#beat-3-solution .cursor", { opacity: 0, duration: 0.4, repeat: blinkCount, yoyo: true, ease: "steps(1)" }, 0.5);
+
+      // Fade in encryption / hash display
+      tl.to("#beat-3-solution .encryption-display", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, typingEnd);
+      
+      // key slide-in
+      tl.to("#beat-3-solution .key-icon", { opacity: 0.8, x: -60, duration: 0.6, ease: "back.out(1.2)" }, typingEnd);
+      
+      // Pulse the lock to confirm verification
+      const pulseTime = typingEnd + 0.5;
+      tl.to("#beat-3-solution .lock-icon", { scale: 1.1, filter: "drop-shadow(0 0 45px rgba(0, 188, 125, 0.75))", duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, pulseTime);
+
+      // Badge snaps in
+      const badgeTime = pulseTime + 0.3;
+      tl.fromTo("#beat-3-solution .status-badge", 
+        { scale: 0.8, opacity: 0 }, 
+        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 
+        badgeTime
+      );
+
+      window.__timelines["beat-3-solution"] = tl;
+    </script>
+  </div>
+</template>

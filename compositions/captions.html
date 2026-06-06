@@ -1,0 +1,198 @@
+<template id="captions-template">
+  <div id="captions" data-composition-id="captions" data-width="1080" data-height="1920">
+    <style>
+      #captions {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .caption-container {
+        position: absolute;
+        bottom: 600px; /* Position in lower middle for portrait screen */
+        left: 0;
+        width: 1080px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 80px;
+      }
+      .caption-group {
+        display: flex;
+        flex-wrap: nowrap; /* Ensure it stays on a single line */
+        justify-content: center;
+        gap: 16px;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        width: 920px;
+      }
+      .caption-word {
+        font-family: sans-serif;
+        font-size: 46px; /* Reduced from 60px to fit 3-5 words comfortably on one line */
+        font-weight: 800;
+        color: rgba(241, 245, 249, 0.4); /* Dim white by default */
+        text-transform: uppercase;
+        display: inline-block;
+        transition: transform 0.1s ease;
+        transform-origin: center center;
+        letter-spacing: -0.02em;
+      }
+    </style>
+
+    <div class="caption-container" data-layout-allow-overflow>
+      <!-- Generated dynamically below -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      
+      // Self-instantiate if loaded standalone (e.g. by the linter) so elements resolve
+      if (!document.querySelector(".caption-container")) {
+        const template = document.getElementById("captions-template");
+        if (template) {
+          document.body.innerHTML += template.innerHTML;
+        }
+      }
+
+      const tl = gsap.timeline({ paused: true });
+
+      // Get transcript from global or use default
+      const rawTranscript = window.__transcript || [
+        { "id": "w0", "text": "Is", "start": 0.3, "end": 0.5 },
+        { "id": "w1", "text": "your", "start": 0.5, "end": 0.7 },
+        { "id": "w2", "text": "email", "start": 0.7, "end": 1.1 },
+        { "id": "w3", "text": "password", "start": 1.1, "end": 1.6 },
+        { "id": "w4", "text": "already", "start": 1.6, "end": 1.9 },
+        { "id": "w5", "text": "in", "start": 1.9, "end": 2.1 },
+        { "id": "w6", "text": "hacker", "start": 2.1, "end": 2.5 },
+        { "id": "w7", "text": "hands?", "start": 2.5, "end": 2.8 }
+      ];
+
+      // Clean transcript (filter out music tags, empty tokens, etc.)
+      const cleanedWords = rawTranscript.filter(function (w) {
+        if (!w.text || w.text.trim().length === 0) return false;
+        if (/^[♪\u266a\u266b\u266c\u266d\u266e\u266f]+$/.test(w.text)) return false;
+        if (/^(huh|uh|um|ah|oh)$/i.test(w.text) && w.end - w.start < 0.1) return false;
+        return true;
+      });
+
+      // Group words dynamically (max 4 words, 20 characters, or pause > 0.4s)
+      const GROUPS = [];
+      let currentGroup = [];
+      let currentGroupCharCount = 0;
+
+      cleanedWords.forEach((word, index) => {
+        const prevWord = cleanedWords[index - 1];
+        const timeGap = prevWord ? (word.start - prevWord.end) : 0;
+        
+        if (
+          currentGroup.length >= 4 ||
+          currentGroupCharCount + word.text.length > 20 ||
+          timeGap > 0.4
+        ) {
+          if (currentGroup.length > 0) {
+            GROUPS.push({
+              id: GROUPS.length,
+              start: currentGroup[0].start,
+              end: currentGroup[currentGroup.length - 1].end,
+              words: currentGroup
+            });
+            currentGroup = [];
+            currentGroupCharCount = 0;
+          }
+        }
+        
+        currentGroup.push(word);
+        currentGroupCharCount += word.text.length + 1; // +1 for space
+      });
+
+      if (currentGroup.length > 0) {
+        GROUPS.push({
+          id: GROUPS.length,
+          start: currentGroup[0].start,
+          end: currentGroup[currentGroup.length - 1].end,
+          words: currentGroup
+        });
+      }
+
+      // Dynamically build DOM elements
+      const container = document.querySelector(".caption-container");
+      if (container) {
+        container.innerHTML = "";
+        GROUPS.forEach(group => {
+          const groupEl = document.createElement("div");
+          groupEl.id = `cg-${group.id}`;
+          groupEl.className = "caption-group";
+          groupEl.setAttribute("data-layout-allow-overflow", "");
+          
+          group.words.forEach(word => {
+            const wordSpan = document.createElement("span");
+            wordSpan.id = word.id || `cw-${word.start.toFixed(2).replace('.', '')}`;
+            wordSpan.className = "caption-word";
+            wordSpan.textContent = word.text;
+            groupEl.appendChild(wordSpan);
+            groupEl.appendChild(document.createTextNode(" "));
+          });
+          
+          container.appendChild(groupEl);
+        });
+      }
+
+      // Add animations to timeline
+      GROUPS.forEach(function (group) {
+        const groupEl = "#cg-" + group.id;
+
+        // 1. Group Entrance Animation
+        tl.set(groupEl, { visibility: "visible" }, group.start);
+        tl.fromTo(groupEl, 
+          { opacity: 0, scale: 0.95 }, 
+          { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out", overwrite: "auto" }, 
+          group.start
+        );
+
+        // 2. Individual Word Karaoke Animations
+        group.words.forEach(function (word) {
+          const wordId = word.id || `cw-${word.start.toFixed(2).replace('.', '')}`;
+          const wordEl = "#" + wordId;
+          
+          // Karaoke highlight: Turn text bright Threat Red (#FF1D58) and scale up slightly
+          tl.to(wordEl, { 
+            color: "#FF1D58", 
+            scale: 1.15, 
+            duration: 0.1, 
+            ease: "power2.out",
+            overwrite: "auto"
+          }, word.start);
+
+          // Reset word color back to full white (#F1F5F9) and original scale when done
+          tl.to(wordEl, { 
+            color: "#F1F5F9", 
+            scale: 1, 
+            duration: 0.12, 
+            ease: "power2.in",
+            overwrite: "auto"
+          }, word.end);
+        });
+
+        // 3. Group Exit Animation & Hard Kill
+        tl.to(groupEl, { 
+          opacity: 0, 
+          scale: 0.95, 
+          duration: 0.12, 
+          ease: "power2.in",
+          overwrite: "auto"
+        }, group.end - 0.12);
+        
+        tl.set(groupEl, { opacity: 0, visibility: "hidden" }, group.end);
+      });
+
+      window.__timelines["captions"] = tl;
+    </script>
+  </div>
+</template>

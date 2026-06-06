@@ -1,0 +1,11 @@
+node_modules/
+renders/
+.env
+.env.*
+*.log
+assets/temp_narration.mp3
+assets/narration.wav
+transcript.json
+.DS_Store
+.thumbnails/
+.agents/

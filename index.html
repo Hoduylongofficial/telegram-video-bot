@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Cyber-Exposure Shield Promo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="variables.js"></script>
+    <script src="timings.js"></script>
+    <script src="transcript.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+        font-family: sans-serif;
+      }
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+      }
+      #scene1 {
+        z-index: 1;
+      }
+      #scene2 {
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+      }
+      #scene3 {
+        z-index: 3;
+        opacity: 0;
+        visibility: hidden;
+      }
+      #scene4 {
+        z-index: 4;
+        opacity: 0;
+        visibility: hidden;
+      }
+      #captions {
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="15.0"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- Audio Narration track -->
+      <audio
+        id="narration"
+        data-start="0.3"
+        data-duration="14.7"
+        data-track-index="5"
+        src="assets/narration.wav"
+        data-volume="1"
+      ></audio>
+
+      <!-- Scene 1: Beat 1 Hook (0.0s - 3.7s) -->
+      <div
+        id="scene1"
+        class="scene clip"
+        data-composition-id="beat-1-hook"
+        data-composition-src="compositions/beat-1-hook.html"
+        data-start="0"
+        data-duration="3.7"
+        data-track-index="0"
+      ></div>
+
+      <!-- Scene 2: Beat 2 Problem (3.3s - 7.0s) -->
+      <div
+        id="scene2"
+        class="scene clip"
+        data-composition-id="beat-2-problem"
+        data-composition-src="compositions/beat-2-problem.html"
+        data-start="3.3"
+        data-duration="3.7"
+        data-track-index="1"
+      ></div>
+
+      <!-- Scene 3: Beat 3 Solution (6.6s - 11.7s) -->
+      <div
+        id="scene3"
+        class="scene clip"
+        data-composition-id="beat-3-solution"
+        data-composition-src="compositions/beat-3-solution.html"
+        data-start="6.6"
+        data-duration="5.1"
+        data-track-index="2"
+      ></div>
+
+      <!-- Scene 4: Beat 4 CTA (11.3s - 15.0s) -->
+      <div
+        id="scene4"
+        class="scene clip"
+        data-composition-id="beat-4-cta"
+        data-composition-src="compositions/beat-4-cta.html"
+        data-start="11.3"
+        data-duration="3.7"
+        data-track-index="3"
+      ></div>
+
+      <!-- Captions Overlay (0s - 15.0s) -->
+      <div
+        id="captions"
+        class="scene clip"
+        data-composition-id="captions"
+        data-composition-src="compositions/captions.html"
+        data-start="0"
+        data-duration="15.0"
+        data-track-index="4"
+      ></div>
+    </div>
+
+    <script>
+      // Apply timings dynamically
+      if (window.__timings) {
+        const t = window.__timings;
+        const root = document.getElementById("root");
+        if (root) root.setAttribute("data-duration", t.totalDuration.toFixed(1));
+        const narration = document.getElementById("narration");
+        if (narration) narration.setAttribute("data-duration", (t.totalDuration - 0.3).toFixed(1));
+        const scene1 = document.getElementById("scene1");
+        if (scene1) scene1.setAttribute("data-duration", t.scene1.duration.toFixed(1));
+        const scene2 = document.getElementById("scene2");
+        if (scene2) {
+          scene2.setAttribute("data-start", t.scene2.start.toFixed(1));
+          scene2.setAttribute("data-duration", t.scene2.duration.toFixed(1));
+        }
+        const scene3 = document.getElementById("scene3");
+        if (scene3) {
+          scene3.setAttribute("data-start", t.scene3.start.toFixed(1));
+          scene3.setAttribute("data-duration", t.scene3.duration.toFixed(1));
+        }
+        const scene4 = document.getElementById("scene4");
+        if (scene4) {
+          scene4.setAttribute("data-start", t.scene4.start.toFixed(1));
+          scene4.setAttribute("data-duration", t.scene4.duration.toFixed(1));
+        }
+        const captions = document.getElementById("captions");
+        if (captions) captions.setAttribute("data-duration", t.totalDuration.toFixed(1));
+      }
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Transition times
+      const T1 = (window.__timings && window.__timings.transitions.t1) || 3.3;
+      const T2 = (window.__timings && window.__timings.transitions.t2) || 6.6;
+      const T3 = (window.__timings && window.__timings.transitions.t3) || 11.3;
+
+      // Transition 1 (Scene 1 to Scene 2): 3.3s to 3.7s
+      tl.to("#scene1", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T1);
+      tl.fromTo("#scene2",
+        { filter: "blur(20px)", opacity: 0, scale: 0.95 },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        T1
+      );
+
+      // Transition 2 (Scene 2 to Scene 3): 6.6s to 7.0s
+      tl.to("#scene2", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T2);
+      tl.fromTo("#scene3",
+        { filter: "blur(20px)", opacity: 0, scale: 0.95 },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        T2
+      );
+
+      // Transition 3 (Scene 3 to Scene 4): 11.3s to 11.7s
+      tl.to("#scene3", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T3);
+      tl.fromTo("#scene4",
+        { filter: "blur(20px)", opacity: 0, scale: 0.95 },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        T3
+      );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

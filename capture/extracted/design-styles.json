@@ -1,0 +1,133 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "60px",
+      "fontWeight": "800",
+      "lineHeight": "66px",
+      "letterSpacing": "-1.5px",
+      "color": "oklch(0.968 0.007 247.896)",
+      "sampleText": "Is Your Email Password Already in Hacker Hands?"
+    },
+    {
+      "role": "body",
+      "fontFamily": "Inter",
+      "fontSize": "18px",
+      "fontWeight": "400",
+      "lineHeight": "29.25px",
+      "letterSpacing": "normal",
+      "color": "oklch(0.704 0.04 256.788)",
+      "sampleText": "Hundreds of millions of passwords are sold daily on the dark"
+    },
+    {
+      "role": "label",
+      "fontFamily": "Inter",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "oklch(0.645 0.246 16.439)",
+      "sampleText": ""
+    },
+    {
+      "role": "heading",
+      "fontFamily": "Space Grotesk",
+      "fontSize": "14px",
+      "fontWeight": "700",
+      "lineHeight": "20px",
+      "letterSpacing": "normal",
+      "color": "oklch(0.929 0.013 255.508)",
+      "sampleText": "Database Scraping Protection"
+    },
+    {
+      "role": "code",
+      "fontFamily": "JetBrains Mono",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "lineHeight": "19.5px",
+      "letterSpacing": "normal",
+      "color": "oklch(0.968 0.007 247.896)",
+      "sampleText": "No password required • Real-time cryptographic signature sca"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      20,
+      24,
+      32,
+      40,
+      48,
+      160
+    ],
+    "baseUnit": 8
+  },
+  "radius": [
+    "6px",
+    "16px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(239, 68, 68, 0.25) 0px 0px 15px 0px",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "button",
+      "background": "#000000",
+      "color": "oklch(0.645 0.246 16.439)",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px solid oklch(0.645 0.246 16.439)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "22px"
+    },
+    {
+      "label": "SCAN MY EMAIL FOR LEAKS (FREE)",
+      "background": "#000000",
+      "color": "oklch(0.129 0.042 264.695)",
+      "padding": "16px 24px",
+      "borderRadius": "16px",
+      "border": "0px solid oklch(0.129 0.042 264.695)",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(239, 68, 68, 0.25) 0px 0px 15px 0px",
+      "fontSize": "12px",
+      "fontWeight": "900",
+      "height": "50px"
+    },
+    {
+      "label": "Corporate Leak (demo@corporatelink.net)",
+      "background": "oklch(0.208 0.042 265.755)",
+      "color": "oklch(0.704 0.04 256.788)",
+      "padding": "0px 10px",
+      "borderRadius": "6px",
+      "border": "1px solid oklch(0.279 0.041 260.031)",
+      "boxShadow": "none",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "height": "17px"
+    }
+  ],
+  "cards": [],
+  "nav": {
+    "label": "navigation",
+    "background": "oklab(0.129 -0.0038832 -0.0418201 / 0.8)",
+    "color": "oklch(0.968 0.007 247.896)",
+    "padding": "0px",
+    "borderRadius": "0px",
+    "border": "",
+    "boxShadow": "none",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "height": "65px"
+  }
+}
