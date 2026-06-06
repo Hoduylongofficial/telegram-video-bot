@@ -174,18 +174,18 @@ All fields are required and must match the structure.
   const finalWav = path.join(assetsDir, "narration.wav");
   
   // Run python tts.py script
-  execSync(`python3 tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`);
+  execSync(`python3 tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`, { stdio: 'pipe', timeout: 120000 });
   
   // Convert to proper WAV via ffmpeg
   await log("🎵 Đang chuyển đổi định dạng âm thanh... (Converting audio format)");
-  execSync(`ffmpeg -y -i "${tempMp3}" -acodec pcm_s16le -ac 1 -ar 24000 "${finalWav}"`, { stdio: 'pipe' });
+  execSync(`ffmpeg -y -i "${tempMp3}" -acodec pcm_s16le -ac 1 -ar 24000 "${finalWav}"`, { stdio: 'pipe', timeout: 60000 });
   
   // Delete temp mp3
   if (fs.existsSync(tempMp3)) fs.unlinkSync(tempMp3);
   
   // 3. Transcribe audio to get word-level timestamps using local Whisper
-  await log("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)...\n⏳ Lần đầu tải model ~2-3 phút, lần sau rất nhanh!");
-  execSync(`npx --yes hyperframes@0.6.76 transcribe "${finalWav}" --model base --language ${lang}`, { stdio: 'pipe' });
+  await log("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)...\n⏳ Lần đầu tải model ~1 phút, lần sau rất nhanh!");
+  execSync(`npx --yes hyperframes@0.6.76 transcribe "${finalWav}" --model tiny --language ${lang}`, { stdio: 'pipe', timeout: 300000 });
   
   // Verify transcript.json exists
   const transcriptJsonPath = path.join(process.cwd(), "transcript.json");
