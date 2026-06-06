@@ -48,10 +48,18 @@ function findWordIndex(words, searchWord, startIndex) {
  * Main orchestration function
  */
 export async function generateVideo(promptText, logCallback = console.log) {
-  logCallback("🤖 Khởi tạo... (Initializing generation)");
+  // Wrap logCallback to always return a promise
+  const log = async (msg) => {
+    console.log(msg);
+    try { await Promise.resolve(logCallback(msg)); } catch(_) {}
+    // Small delay to let Telegram process the edit
+    await new Promise(r => setTimeout(r, 300));
+  };
+
+  await log("🤖 Khởi tạo... (Initializing generation)");
   
   // 1. Call Gemini to expand script and generate metadata variables
-  logCallback("📝 Đang phân tích kịch bản bằng Gemini AI... (Analyzing script with Gemini AI)");
+  await log("📝 Đang phân tích kịch bản bằng Gemini AI... (Analyzing script with Gemini AI)");
   const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
   
   const systemInstruction = `
@@ -150,14 +158,14 @@ All fields are required and must match the structure.
 
   const responseText = response.response.text();
   const storyboard = JSON.parse(responseText);
-  logCallback("✅ Đã tạo kịch bản phân cảnh! (Storyboard parsed)");
+  await log("✅ Đã tạo kịch bản phân cảnh! (Storyboard parsed)");
   
   // 2. Determine voice language and synthesize TTS
   const isVietnamese = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(storyboard.voiceover);
   const lang = isVietnamese ? "vi" : "en";
   const voice = isVietnamese ? "vi-VN-HoaiMyNeural" : "en-US-AriaNeural";
   
-  logCallback(`🎙️ Đang tạo giọng đọc (${lang === "vi" ? "Tiếng Việt" : "Tiếng Anh"})... (Generating TTS)`);
+  await log(`🎙️ Đang tạo giọng đọc (${lang === "vi" ? "Tiếng Việt" : "Tiếng Anh"})... (Generating TTS)`);
   
   const assetsDir = path.join(process.cwd(), "assets");
   if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir);
@@ -169,15 +177,15 @@ All fields are required and must match the structure.
   execSync(`python3 tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`);
   
   // Convert to proper WAV via ffmpeg
-  logCallback("🎵 Đang chuyển đổi định dạng âm thanh... (Converting audio format)");
-  execSync(`ffmpeg -y -i "${tempMp3}" -acodec pcm_s16le -ac 1 -ar 24000 "${finalWav}"`);
+  await log("🎵 Đang chuyển đổi định dạng âm thanh... (Converting audio format)");
+  execSync(`ffmpeg -y -i "${tempMp3}" -acodec pcm_s16le -ac 1 -ar 24000 "${finalWav}"`, { stdio: 'pipe' });
   
   // Delete temp mp3
   if (fs.existsSync(tempMp3)) fs.unlinkSync(tempMp3);
   
   // 3. Transcribe audio to get word-level timestamps using local Whisper
-  logCallback("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)... (Transcribing audio with Whisper)");
-  execSync(`npx --yes hyperframes@0.6.76 transcribe "${finalWav}" --model base --language ${lang}`);
+  await log("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)...\n⏳ Lần đầu tải model ~2-3 phút, lần sau rất nhanh!");
+  execSync(`npx --yes hyperframes@0.6.76 transcribe "${finalWav}" --model base --language ${lang}`, { stdio: 'pipe' });
   
   // Verify transcript.json exists
   const transcriptJsonPath = path.join(process.cwd(), "transcript.json");
@@ -194,7 +202,7 @@ All fields are required and must match the structure.
   );
   
   // 5. Calculate timings dynamically by matching the voiceover beats with transcript words
-  logCallback("⏱️ Đang đồng bộ thời gian phân cảnh... (Calculating dynamic timing sync)");
+  await log("⏱️ Đang đồng bộ thời gian phân cảnh... (Calculating dynamic timing sync)");
   const totalAudioDuration = cleaned.length > 0 ? cleaned[cleaned.length - 1].end : 15.0;
   
   // Split the beat voiceovers into arrays of words
@@ -275,7 +283,7 @@ All fields are required and must match the structure.
   );
   
   // 7. Render video to MP4 using npm run render (hyperframes render)
-  logCallback("🎬 Đang dựng video MP4 (Rendering)... (This may take a minute)");
+  await log("🎬 Đang dựng video MP4 (Rendering)...\n⏳ Quá trình này mất 1-3 phút, vui lòng chờ!");
   
   const renderDir = path.join(process.cwd(), "renders");
   if (!fs.existsSync(renderDir)) fs.mkdirSync(renderDir);
@@ -294,7 +302,7 @@ All fields are required and must match the structure.
     child.stdout.on("data", (data) => {
       const line = data.toString().trim();
       if (line.includes("Frame") || line.includes("Render")) {
-        // Feed render progress into callback
+        // Feed render progress (fire-and-forget, no await needed here)
         logCallback(`🎬 [Render]: ${line}`);
       }
     });
@@ -306,7 +314,7 @@ All fields are required and must match the structure.
     child.on("close", (code) => {
       if (code === 0) {
         logCallback("🎉 Kết xuất video thành công! (Render complete)");
-        resolve(outputPath);
+        setTimeout(() => resolve(outputPath), 500);
       } else {
         reject(new Error(`HyperFrames render exited with code ${code}`));
       }
