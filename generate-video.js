@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { execSync, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
@@ -12,7 +12,7 @@ if (!apiKey) {
   console.error("Error: GEMINI_API_KEY is not defined in .env");
   process.exit(1);
 }
-const ai = new GoogleGenAI({ apiKey });
+const ai = new GoogleGenerativeAI(apiKey);
 
 /**
  * Clean transcript by filtering out music tokens and empty words
