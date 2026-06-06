@@ -185,7 +185,7 @@ All fields are required and must match the structure.
   
   // 3. Transcribe audio to get word-level timestamps using local Whisper
   await log("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)...\n⏳ Lần đầu tải model ~1 phút, lần sau rất nhanh!");
-  execSync(`npx --yes hyperframes@0.6.76 transcribe "${finalWav}" --model tiny --language ${lang}`, { stdio: 'pipe', timeout: 300000 });
+  execSync(`python3 transcribe.py "${finalWav}" ${lang}`, { stdio: 'pipe', timeout: 300000 });
   
   // Verify transcript.json exists
   const transcriptJsonPath = path.join(process.cwd(), "transcript.json");
