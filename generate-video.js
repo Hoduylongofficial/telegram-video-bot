@@ -166,7 +166,7 @@ All fields are required and must match the structure.
   const finalWav = path.join(assetsDir, "narration.wav");
   
   // Run python tts.py script
-  execSync(`python tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`);
+  execSync(`python3 tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`);
   
   // Convert to proper WAV via ffmpeg
   logCallback("🎵 Đang chuyển đổi định dạng âm thanh... (Converting audio format)");
