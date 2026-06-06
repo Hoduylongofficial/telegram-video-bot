@@ -52,7 +52,7 @@ export async function generateVideo(promptText, logCallback = console.log) {
   
   // 1. Call Gemini to expand script and generate metadata variables
   logCallback("📝 Đang phân tích kịch bản bằng Gemini AI... (Analyzing script with Gemini AI)");
-  const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
   
   const systemInstruction = `
 You are a professional video storyboard scriptwriter. You take a short user script/prompt (in Vietnamese or English) and expand it into a structured storyboard config for a 15-second Cybersecurity Promo Video.
