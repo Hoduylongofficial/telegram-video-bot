@@ -71,6 +71,12 @@ async function processQueue() {
   }
 }
 
+// Middleware to log all incoming updates for debugging
+bot.use(async (ctx, next) => {
+  console.log(`📩 Received update type: ${ctx.updateType} from chat ID: ${ctx.chat?.id || "N/A"}`);
+  return next();
+});
+
 // Command /start
 bot.start((ctx) => {
   ctx.reply(
@@ -88,6 +94,11 @@ bot.command("status", (ctx) => {
   } else {
     ctx.reply(`✅ Bot sẵn sàng!\n📋 Hàng chờ: ${queue.length} yêu cầu`);
   }
+});
+
+// Command /ping
+bot.command("ping", (ctx) => {
+  ctx.reply("🏓 Pong! Bot is connected and active.");
 });
 
 // Listener for text prompts
@@ -126,9 +137,12 @@ bot.on("text", async (ctx) => {
 
 // Start bot
 if (botToken && botToken !== "DUMMY_TOKEN") {
-  bot.launch({
-    dropPendingUpdates: true, // Bỏ qua các message cũ khi restart
-  })
+  console.log("⚙️ Deleting webhook explicitly to clear conflicts...");
+  bot.telegram.deleteWebhook({ drop_pending_updates: true })
+    .then(() => {
+      console.log("✅ Webhook deleted. Launching bot polling...");
+      return bot.launch();
+    })
     .then(() => console.log("🤖 Telegram Bot has started successfully! Listening for messages..."))
     .catch((err) => console.error("Failed to start Telegram Bot:", err));
 }
