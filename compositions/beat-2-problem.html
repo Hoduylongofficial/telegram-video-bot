@@ -8,185 +8,139 @@
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #030712;
+        background: #0D0E12;
       }
-      .content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 100%;
-        height: 100%;
-        padding: 160px 80px;
-        position: relative;
-        z-index: 10;
-      }
-      .header-text {
-        font-family: monospace;
-        font-weight: 700;
-        font-size: 24px;
-        color: #ff1d58;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-      }
-      .browser-preview {
-        width: 100%;
-        height: 600px;
-        background: #0f172b;
-        border: 2px solid #1d293d;
-        border-radius: 16px;
+      .screenshot-bg-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
         overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        z-index: 1;
       }
-      .browser-header {
-        height: 40px;
-        background: #1d293d;
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        gap: 15px;
-      }
-      .browser-dots {
-        display: flex;
-        gap: 6px;
-      }
-      .b-dot {
-        width: 10px;
-        height: 10px;
-        background: #475569;
-        border-radius: 50%;
-      }
-      .browser-address {
-        flex-grow: 1;
-        background: #030712;
-        border-radius: 6px;
-        height: 26px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #90a1b9;
-        font-family: monospace;
-        font-size: 14px;
-      }
-      .browser-screen {
-        width: 100%;
-        height: calc(100% - 40px);
-        overflow: hidden;
-        position: relative;
-      }
-      .browser-screen img {
-        width: 100%;
-        display: block;
+      .web-screenshot {
+        width: 1080px;
+        height: 2500px; /* Tall image for scrolling */
+        object-fit: cover;
+        object-position: top center;
         position: absolute;
         top: 0;
         left: 0;
       }
-      .bottom-card {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .terminal-card {
-        background: #0f172b;
-        border: 1px solid #1d293d;
-        border-radius: 12px;
-        width: 100%;
-        height: 360px;
-        padding: 30px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-      }
-      .terminal-scroll {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+      .scrim {
         position: absolute;
-        width: calc(100% - 60px);
-        top: 30px;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.5) 0%, rgba(13, 14, 18, 0.8) 50%, rgba(13, 14, 18, 0.95) 100%);
+        z-index: 2;
       }
-      .terminal-row {
-        font-family: monospace;
-        font-size: 28px;
-        color: #90a1b9;
+      .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        padding: 160px 80px;
         display: flex;
-        justify-content: space-between;
-        border-bottom: 1px dashed rgba(144, 161, 185, 0.15);
-        padding-bottom: 8px;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        z-index: 10;
       }
-      .terminal-leak-name {
-        color: #ff1d58;
-        font-weight: 700;
-      }
-      .stat-section {
-        margin-top: 10px;
+      .stat-card {
+        width: 100%;
+        background: rgba(15, 23, 43, 0.65);
+        border: 2px solid rgba(29, 41, 61, 0.55);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 45px;
+        margin-top: 50px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         display: flex;
         flex-direction: column;
         align-items: center;
-        text-align: center;
+      }
+      .stat-header {
+        font-family: monospace;
+        font-weight: 700;
+        font-size: 24px;
+        color: #FFE500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
       }
       .stat-number {
-        font-family: monospace;
-        font-weight: 800;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 900;
         font-size: 110px;
-        color: #f1f5f9;
+        color: #F8F9FA;
         line-height: 1;
-        letter-spacing: -0.05em;
-        text-shadow: 0 0 40px rgba(241, 245, 249, 0.15);
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+        margin-bottom: 10px;
       }
       .stat-label {
-        font-family: sans-serif;
+        font-family: 'Outfit', sans-serif;
         font-size: 26px;
-        color: #90a1b9;
-        margin-top: 10px;
-        font-weight: 400;
+        color: #90A1B9;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        text-align: center;
+        margin-bottom: 35px;
       }
-      .glow {
+      .comparison-rows {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .comp-row {
+        font-family: 'Outfit', sans-serif;
+        font-size: 26px;
+        color: #F8F9FA;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px dashed rgba(144, 161, 185, 0.2);
+        padding-bottom: 10px;
+      }
+      .comp-row-value {
+        font-weight: 900;
+        color: #FFE500;
+        text-shadow: 0 0 10px rgba(255, 229, 0, 0.2);
+      }
+      .glow-ring {
         position: absolute;
         width: 700px;
         height: 700px;
         border-radius: 50%;
-        background: #0891b2;
-        filter: blur(160px);
-        opacity: 0.12;
-        bottom: 10%;
+        background: #FFE500;
+        filter: blur(180px);
+        opacity: 0.06;
+        bottom: 20%;
         right: -100px;
-        z-index: 1;
+        z-index: 2;
         pointer-events: none;
       }
     </style>
 
-    <div class="glow" data-layout-allow-overflow></div>
+    <div class="screenshot-bg-container" data-layout-allow-overflow>
+      <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" data-layout-allow-overflow />
+      <div class="scrim"></div>
+    </div>
+    <div class="glow-ring" data-layout-allow-overflow></div>
     
     <div class="content" data-layout-allow-overflow>
-      <!-- Top Browser preview scrolling website -->
-      <div class="browser-preview">
-        <div class="browser-header">
-          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
-          <div class="browser-address">website.com</div>
-        </div>
-        <div class="browser-screen">
-          <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" />
-        </div>
-      </div>
-
-      <!-- Bottom Card with dynamic rows and statistics -->
-      <div class="bottom-card">
-        <div>
-          <div class="header-text">Database Exposure</div>
-          <div class="terminal-card" data-layout-allow-overflow>
-            <div class="terminal-scroll">
-              <!-- Terminal rows generated dynamically below -->
-            </div>
-          </div>
-        </div>
-        
-        <div class="stat-section">
-          <div class="stat-number"><span class="counter-num">0.0</span>B</div>
-          <div class="stat-label">Compromised Indexes Loaded</div>
+      <div class="stat-card" data-layout-allow-overflow>
+        <div class="stat-header">Database Exposure</div>
+        <div class="stat-number"><span class="counter-num">0.0</span>B</div>
+        <div class="stat-label">Compromised Indexes Loaded</div>
+        <div class="comparison-rows">
+          <!-- Populated dynamically -->
         </div>
       </div>
     </div>
@@ -195,7 +149,14 @@
     <script>
       window.__timelines = window.__timelines || {};
       
-      // Dynamic content and timings
+      // Self-instantiate if loaded standalone
+      if (!document.querySelector(".screenshot-bg-container")) {
+        const template = document.getElementById("beat-2-problem-template");
+        if (template) {
+          document.body.innerHTML += template.innerHTML;
+        }
+      }
+
       const vars = (window.__variables && window.__variables.beat2) || {
         header: "Database Exposure",
         stat: "14.8",
@@ -205,16 +166,13 @@
           { email: "j.smi***@gmail.com", leak: "Adobe 153M" },
           { email: "admin@corporatelink.net", leak: "LinkedIn 164M" },
           { email: "t.jack***@yahoo.com", leak: "Yahoo 3B" },
-          { email: "alex.v***@gmail.com", leak: "Canva 137M" },
-          { email: "corp_sec***@shield.net", leak: "Dropbox 68M" },
-          { email: "m.vander***@outlook.com", leak: "Zynga 173M" },
-          { email: "sys_db***@main-portal.com", leak: "Adobe 153M" }
+          { email: "alex.v***@gmail.com", leak: "Canva 137M" }
         ]
       };
       const duration = (window.__timings && window.__timings.scene2.duration) || 3.7;
 
       // Populate layout dynamically
-      const headerEl = document.querySelector("#beat-2-problem .header-text");
+      const headerEl = document.querySelector("#beat-2-problem .stat-header");
       if (headerEl) headerEl.textContent = vars.header;
 
       const labelEl = document.querySelector("#beat-2-problem .stat-label");
@@ -225,53 +183,62 @@
         statNumberEl.innerHTML = `<span class="counter-num">0.0</span>${vars.unit}`;
       }
 
-      // Address bar text (clean domain name)
-      const addressBarEl = document.querySelector("#beat-2-problem .browser-address");
-      if (addressBarEl && window.__variables && window.__variables.beat4) {
-        addressBarEl.textContent = window.__variables.beat4.url || "website.com";
-      } else if (addressBarEl) {
-        addressBarEl.textContent = "promosaver.net";
-      }
-
-      const scrollEl = document.querySelector("#beat-2-problem .terminal-scroll");
-      if (scrollEl) {
-        scrollEl.innerHTML = "";
-        vars.rows.forEach(row => {
+      const rowsContainer = document.querySelector("#beat-2-problem .comparison-rows");
+      if (rowsContainer) {
+        rowsContainer.innerHTML = "";
+        // Take up to 4 rows for clean display
+        vars.rows.slice(0, 4).forEach(row => {
           const rowEl = document.createElement("div");
-          rowEl.className = "terminal-row";
-          rowEl.innerHTML = `<span>${row.email}</span><span class="terminal-leak-name">${row.leak}</span>`;
-          scrollEl.appendChild(rowEl);
+          rowEl.className = "comp-row";
+          rowEl.innerHTML = `<span>${row.email}</span><span class="comp-row-value">${row.leak}</span>`;
+          rowsContainer.appendChild(rowEl);
         });
       }
 
       const tl = gsap.timeline({ paused: true });
 
-      // Animate the website screenshot scrolling down!
-      const animDuration = Math.max(duration - 0.4, 1);
-      tl.to("#beat-2-problem .web-screenshot", { y: "-40%", duration: animDuration, ease: "power1.inOut" }, 0);
+      const animDuration = Math.max(duration - 0.2, 1);
+      
+      // Screenshot slow-scroll animation
+      tl.fromTo("#beat-2-problem .web-screenshot", 
+        { y: 0 },
+        { y: -300, duration: animDuration, ease: "sine.inOut" }, 
+        0
+      );
+      
+      // Content container scale
       tl.to("#beat-2-problem .content", { scale: 1.02, duration: animDuration, ease: "sine.inOut" }, 0);
 
-      // Entrances
-      tl.from("#beat-2-problem .browser-preview", { y: -50, opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
-      tl.from("#beat-2-problem .bottom-card", { y: 50, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
-
-      // Terminal list scrolling upwards
-      const scrollHeight = vars.rows.length * 45 - 300; // estimate scroll distance
-      const scrollDistance = scrollHeight > 0 ? -scrollHeight : -120;
-      tl.to("#beat-2-problem .terminal-scroll", { y: scrollDistance, duration: Math.max(animDuration - 0.3, 1), ease: "power1.inOut" }, 0.3);
+      // Card entrance animation
+      tl.from("#beat-2-problem .stat-card", { 
+        y: 100, 
+        scale: 0.9, 
+        opacity: 0, 
+        duration: 0.7, 
+        ease: "back.out(1.2)" 
+      }, 0.15);
 
       // Numeric count-up
       const countObj = { val: 0.0 };
-      const targetVal = parseFloat(vars.stat);
+      const targetVal = parseFloat(vars.stat) || 0;
       tl.to(countObj, {
         val: targetVal,
-        duration: Math.max(animDuration - 0.8, 1),
+        duration: Math.max(animDuration - 0.5, 0.8),
         ease: "power2.out",
         onUpdate: function() {
           const el = document.querySelector("#beat-2-problem .counter-num");
           if (el) el.textContent = countObj.val.toFixed(1);
         }
-      }, 0.5);
+      }, 0.3);
+
+      // Rows fade in stagger
+      tl.from("#beat-2-problem .comp-row", { 
+        opacity: 0, 
+        y: 20, 
+        duration: 0.4, 
+        stagger: 0.1, 
+        ease: "power2.out" 
+      }, 0.45);
 
       window.__timelines["beat-2-problem"] = tl;
     </script>

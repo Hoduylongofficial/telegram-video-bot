@@ -8,280 +8,157 @@
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #030712;
+        background: #0D0E12;
+      }
+      .screenshot-bg-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        z-index: 1;
+      }
+      .web-screenshot {
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+        object-position: center center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: scale(1.1);
+      }
+      .scrim {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.75) 60%, rgba(13, 14, 18, 0.95) 100%);
+        z-index: 2;
       }
       .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        padding: 160px 80px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        width: 100%;
-        height: 100%;
-        padding: 120px 80px;
-        position: relative;
         z-index: 10;
-        gap: 60px;
       }
       .header-text {
         font-family: monospace;
         font-weight: 700;
         font-size: 24px;
-        color: #00bc7d;
-        letter-spacing: 0.1em;
+        color: #FFE500;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
+        margin-bottom: 25px;
       }
-      .panel-card {
-        background: #0f172b;
-        border: 1px solid #1d293d;
-        border-radius: 16px;
+      .verification-card {
         width: 100%;
-        padding: 50px 40px;
+        background: rgba(15, 23, 43, 0.7);
+        border: 2px solid rgba(0, 243, 255, 0.4);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 45px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 243, 255, 0.15);
         display: flex;
         flex-direction: column;
-        gap: 40px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        position: relative;
+        gap: 25px;
+        margin-top: 50px;
       }
-      .input-wrapper {
-        background: #030712;
-        border: 1px solid #1d293d;
-        border-radius: 12px;
-        height: 100px;
-        width: 100%;
-        padding: 0 30px;
-        display: flex;
-        align-items: center;
-        position: relative;
-      }
-      .input-placeholder {
-        font-family: monospace;
-        font-size: 32px;
-        color: #90a1b9;
-      }
-      .cursor {
-        width: 4px;
-        height: 40px;
-        background: #00bc7d;
-        margin-left: 6px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .encryption-display {
-        border-top: 1px dashed rgba(144, 161, 185, 0.15);
-        padding-top: 30px;
+      .info-row {
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        opacity: 0;
+        gap: 8px;
       }
-      .hash-label {
+      .info-label {
         font-family: monospace;
-        font-size: 20px;
-        color: #90a1b9;
+        font-size: 18px;
+        color: #90A1B9;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
-      .hash-value {
+      .info-value {
+        font-family: 'Outfit', sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        color: #F8F9FA;
+        letter-spacing: -0.01em;
+      }
+      .info-value.monospace-val {
         font-family: monospace;
         font-size: 28px;
-        color: #f1f5f9;
-        background: #030712;
-        padding: 20px;
+        background: rgba(3, 7, 18, 0.4);
+        padding: 15px;
         border-radius: 8px;
         word-break: break-all;
-        border: 1px solid rgba(0, 188, 125, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
       .status-badge {
-        background: rgba(0, 188, 125, 0.1);
-        border: 1px solid #00bc7d;
-        border-radius: 6px;
-        padding: 10px 20px;
+        background: rgba(0, 243, 255, 0.1);
+        border: 1px solid #00F3FF;
+        border-radius: 8px;
+        padding: 12px 25px;
         align-self: center;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        opacity: 0;
-      }
-      .status-badge span {
-        font-family: monospace;
-        font-size: 22px;
-        color: #00bc7d;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-      .browser-preview {
-        width: 100%;
-        height: 600px;
-        background: #0f172b;
-        border: 2px solid #1d293d;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      }
-      .browser-header {
-        height: 40px;
-        background: #1d293d;
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        gap: 15px;
-      }
-      .browser-dots {
-        display: flex;
-        gap: 6px;
-      }
-      .b-dot {
-        width: 10px;
-        height: 10px;
-        background: #475569;
-        border-radius: 50%;
-      }
-      .browser-address {
-        flex-grow: 1;
-        background: #030712;
-        border-radius: 6px;
-        height: 26px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #90a1b9;
-        font-family: monospace;
-        font-size: 14px;
-      }
-      .browser-screen {
-        width: 100%;
-        height: calc(100% - 40px);
-        overflow: hidden;
-        position: relative;
-      }
-      .browser-screen img {
-        width: 100%;
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-      .panel-card {
-        background: #0f172b;
-        border: 1px solid #1d293d;
-        border-radius: 16px;
-        width: 100%;
-        padding: 40px 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        position: relative;
-      }
-      .input-wrapper {
-        background: #030712;
-        border: 1px solid #1d293d;
-        border-radius: 12px;
-        height: 100px;
-        width: 100%;
-        padding: 0 30px;
-        display: flex;
-        align-items: center;
-        position: relative;
-      }
-      .input-placeholder {
-        font-family: monospace;
-        font-size: 32px;
-        color: #90a1b9;
-      }
-      .cursor {
-        width: 4px;
-        height: 40px;
-        background: #00bc7d;
-        margin-left: 6px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .encryption-display {
-        border-top: 1px dashed rgba(144, 161, 185, 0.15);
-        padding-top: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        opacity: 0;
-      }
-      .hash-label {
-        font-family: monospace;
-        font-size: 20px;
-        color: #90a1b9;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .hash-value {
-        font-family: monospace;
-        font-size: 28px;
-        color: #f1f5f9;
-        background: #030712;
-        padding: 20px;
-        border-radius: 8px;
-        word-break: break-all;
-        border: 1px solid rgba(0, 188, 125, 0.15);
-      }
-      .status-badge {
-        background: rgba(0, 188, 125, 0.1);
-        border: 1px solid #00bc7d;
-        border-radius: 6px;
-        padding: 10px 20px;
-        align-self: center;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        opacity: 0;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        margin-top: 10px;
       }
       .status-badge span {
         font-family: monospace;
-        font-size: 22px;
-        color: #00bc7d;
-        font-weight: 700;
+        font-size: 24px;
+        color: #00F3FF;
+        font-weight: 900;
         text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
-      .glow {
+      .glow-ring {
         position: absolute;
-        width: 700px;
-        height: 700px;
+        width: 800px;
+        height: 800px;
         border-radius: 50%;
-        background: #00bc7d;
-        filter: blur(160px);
-        opacity: 0.15;
-        top: 40%;
+        background: #00F3FF;
+        filter: blur(180px);
+        opacity: 0.06;
+        top: 25%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 1;
+        z-index: 2;
         pointer-events: none;
       }
     </style>
 
-    <div class="glow" data-layout-allow-overflow></div>
+    <div class="screenshot-bg-container" data-layout-allow-overflow>
+      <img class="web-screenshot" src="capture/screenshots/scroll-100.png" onerror="this.src='capture/screenshots/scroll-000.png'" alt="Website Screenshot" data-layout-allow-overflow />
+      <div class="scrim"></div>
+    </div>
+    <div class="glow-ring" data-layout-allow-overflow></div>
     
     <div class="content" data-layout-allow-overflow>
-      <!-- Top Browser preview showing website secondary page/tool -->
-      <div class="browser-preview">
-        <div class="browser-header">
-          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
-          <div class="browser-address">website.com</div>
-        </div>
-        <div class="browser-screen">
-          <img class="web-screenshot" src="capture/screenshots/scroll-100.png" alt="Website Screenshot" />
-        </div>
-      </div>
-      
-      <div class="header-text">Cryptographic Check</div>
-      
-      <div class="panel-card">
-        <div class="input-wrapper">
-          <span class="input-placeholder"></span><span class="cursor"></span>
-        </div>
+      <div class="verification-card" data-layout-allow-overflow>
+        <div class="stat-header" style="display:none;"></div>
+        <div class="header-text">Cryptographic Check</div>
         
-        <div class="encryption-display">
-          <div class="hash-label">Local SHA-256 Hash</div>
-          <div class="hash-value">5e883f98892919347d1756228466bb414b490d4684504121ec37f14302c44186</div>
+        <div class="info-row">
+          <div class="info-label">Active Feature</div>
+          <div class="info-value input-field">eSIM QR Scanner</div>
         </div>
-        
+
+        <div class="info-row">
+          <div class="info-label">Status Details</div>
+          <div class="info-value monospace-val result-detail">5e883f98892919347...</div>
+        </div>
+
         <div class="status-badge">
           <span>Zero Logs Policy Verified</span>
         </div>
@@ -291,8 +168,8 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <script>
       window.__timelines = window.__timelines || {};
-
-      // Self-instantiate if loaded standalone (e.g. by the linter) so elements resolve
+      
+      // Self-instantiate if loaded standalone
       if (!document.getElementById("beat-3-solution")) {
         const template = document.getElementById("beat-3-solution-template");
         if (template) {
@@ -303,7 +180,7 @@
       // Dynamic variables and timings
       const vars = (window.__variables && window.__variables.beat3) || {
         header: "Cryptographic Check",
-        email: "demo@corporatelink.net",
+        email: "eSIM QR Scanner",
         hash: "5e883f98892919347d1756228466bb414b490d4684504121ec37f14302c44186",
         badge: "Zero Logs Policy Verified"
       };
@@ -313,65 +190,59 @@
       const headerEl = document.querySelector("#beat-3-solution .header-text");
       if (headerEl) headerEl.textContent = vars.header;
 
-      const hashValueEl = document.querySelector("#beat-3-solution .hash-value");
-      if (hashValueEl) hashValueEl.textContent = vars.hash;
+      const inputFieldEl = document.querySelector("#beat-3-solution .input-field");
+      if (inputFieldEl) inputFieldEl.textContent = vars.email;
+
+      const resultDetailEl = document.querySelector("#beat-3-solution .result-detail");
+      if (resultDetailEl) {
+        // Truncate hashes if too long for nice layout
+        if (vars.hash.length > 28) {
+          resultDetailEl.textContent = vars.hash.slice(0, 18) + "..." + vars.hash.slice(-8);
+        } else {
+          resultDetailEl.textContent = vars.hash;
+        }
+      }
 
       const badgeEl = document.querySelector("#beat-3-solution .status-badge span");
       if (badgeEl) badgeEl.textContent = vars.badge;
 
-      // Address bar text (clean domain name)
-      const addressBarEl = document.querySelector("#beat-3-solution .browser-address");
-      if (addressBarEl && window.__variables && window.__variables.beat4) {
-        addressBarEl.textContent = window.__variables.beat4.url || "website.com";
-      } else if (addressBarEl) {
-        addressBarEl.textContent = "promosaver.net";
-      }
-
       const tl = gsap.timeline({ paused: true });
 
-      // Ambient glow breathing & slow dolly-out
-      const animDuration = Math.max(duration - 0.4, 1);
-      tl.to("#beat-3-solution .glow", { scale: 1.2, opacity: 0.2, duration: animDuration, yoyo: true, repeat: 0, ease: "sine.inOut" }, 0);
-      tl.to("#beat-3-solution .content", { scale: 0.98, duration: animDuration, ease: "sine.inOut" }, 0);
-      tl.to("#beat-3-solution .web-screenshot", { y: "-30%", duration: animDuration, ease: "power1.inOut" }, 0);
-
-      // Entrances
-      tl.from("#beat-3-solution .browser-preview", { y: -40, opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
-      tl.from("#beat-3-solution .header-text", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
-      tl.from("#beat-3-solution .panel-card", { y: 50, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.3);
-
-      // Typing simulation
-      const textVal = vars.email;
-      const typeObj = { charCount: 0 };
-      const typingDuration = Math.min(1.2, animDuration * 0.35);
-      const typingStart = 0.5;
-      const typingEnd = typingStart + typingDuration;
+      const animDuration = Math.max(duration - 0.2, 1);
       
-      tl.to(typeObj, {
-        charCount: textVal.length,
-        duration: typingDuration,
-        ease: "none",
-        onUpdate: function() {
-          const el = document.querySelector("#beat-3-solution .input-placeholder");
-          if (el) {
-            el.textContent = textVal.slice(0, Math.round(typeObj.charCount));
-          }
-        }
-      }, typingStart);
+      // Focal zoom on screenshot background
+      tl.fromTo("#beat-3-solution .web-screenshot", 
+        { scale: 1.1, x: 0, y: 0 },
+        { scale: 1.55, x: -80, y: -90, duration: animDuration, ease: "power2.inOut" }, 
+        0
+      );
+      
+      // Scale content wrapper
+      tl.to("#beat-3-solution .content", { scale: 0.98, duration: animDuration, ease: "sine.inOut" }, 0);
 
-      // Blink cursor
-      const blinkCount = Math.ceil(animDuration / 0.4);
-      tl.to("#beat-3-solution .cursor", { opacity: 0, duration: 0.4, repeat: blinkCount, yoyo: true, ease: "steps(1)" }, 0.5);
+      // Card entrance animation
+      tl.from("#beat-3-solution .verification-card", { 
+        y: 80, 
+        scale: 0.92, 
+        opacity: 0, 
+        duration: 0.8, 
+        ease: "back.out(1.2)" 
+      }, 0.15);
 
-      // Fade in encryption / hash display
-      tl.to("#beat-3-solution .encryption-display", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, typingEnd);
+      // Stagger animate all info rows cleanly
+      tl.from("#beat-3-solution .info-row", {
+        opacity: 0,
+        x: -20,
+        duration: 0.4,
+        stagger: 0.2,
+        ease: "power2.out"
+      }, 0.4);
 
-      // Badge snaps in
-      const badgeTime = typingEnd + 0.4;
-      tl.fromTo("#beat-3-solution .status-badge", 
-        { scale: 0.8, opacity: 0 }, 
-        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 
-        badgeTime
+      // Status badge pop in
+      tl.fromTo("#beat-3-solution .status-badge",
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2.0)" },
+        0.9
       );
 
       window.__timelines["beat-3-solution"] = tl;

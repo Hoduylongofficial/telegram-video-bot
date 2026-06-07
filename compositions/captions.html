@@ -32,10 +32,10 @@
         width: 920px;
       }
       .caption-word {
-        font-family: sans-serif;
-        font-size: 46px; /* Reduced from 60px to fit 3-5 words comfortably on one line */
-        font-weight: 800;
-        color: rgba(241, 245, 249, 0.4); /* Dim white by default */
+        font-family: 'Outfit', sans-serif;
+        font-size: 52px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.4);
         text-transform: uppercase;
         display: inline-block;
         transition: transform 0.1s ease;
@@ -161,19 +161,21 @@
           const wordId = word.id || `cw-${word.start.toFixed(2).replace('.', '')}`;
           const wordEl = "#" + wordId;
           
-          // Karaoke highlight: Turn text bright Threat Red (#FF1D58) and scale up slightly
+          // Karaoke highlight: Turn text bright Yellow (#FFE500) and scale up slightly
           tl.to(wordEl, { 
-            color: "#FF1D58", 
+            color: "#FFE500", 
             scale: 1.15, 
+            textShadow: "0 0 15px rgba(255, 229, 0, 0.4)",
             duration: 0.1, 
             ease: "power2.out",
             overwrite: "auto"
           }, word.start);
 
-          // Reset word color back to full white (#F1F5F9) and original scale when done
+          // Reset word color back to full white (#FFFFFF) and original scale when done
           tl.to(wordEl, { 
-            color: "#F1F5F9", 
+            color: "#FFFFFF", 
             scale: 1, 
+            textShadow: "none",
             duration: 0.12, 
             ease: "power2.in",
             overwrite: "auto"

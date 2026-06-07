@@ -35,7 +35,12 @@ def transcribe(audio_path, language=None):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(words, f, ensure_ascii=False, indent=2)
     
-    print(f"✅ Transcribed {len(words)} words → transcript.json")
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+        
+    print(f"SUCCESS: Transcribed {len(words)} words to transcript.json")
     return words
 
 if __name__ == "__main__":

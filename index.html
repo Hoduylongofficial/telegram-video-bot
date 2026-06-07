@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
-    <title>Cyber-Exposure Shield Promo</title>
+    <title>AI News Shorts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <script src="variables.js"></script>
     <script src="timings.js"></script>
@@ -20,8 +23,8 @@
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #000;
-        font-family: sans-serif;
+        background: #0D0E12;
+        font-family: 'Outfit', sans-serif;
       }
       .scene {
         position: absolute;
@@ -167,26 +170,26 @@
       const T3 = (window.__timings && window.__timings.transitions.t3) || 11.3;
 
       // Transition 1 (Scene 1 to Scene 2): 3.3s to 3.7s
-      tl.to("#scene1", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T1);
+      tl.to("#scene1", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut", overwrite: "auto" }, T1);
       tl.fromTo("#scene2",
         { filter: "blur(20px)", opacity: 0, scale: 0.95 },
-        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut", overwrite: "auto" },
         T1
       );
 
       // Transition 2 (Scene 2 to Scene 3): 6.6s to 7.0s
-      tl.to("#scene2", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T2);
+      tl.to("#scene2", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut", overwrite: "auto" }, T2);
       tl.fromTo("#scene3",
         { filter: "blur(20px)", opacity: 0, scale: 0.95 },
-        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut", overwrite: "auto" },
         T2
       );
 
       // Transition 3 (Scene 3 to Scene 4): 11.3s to 11.7s
-      tl.to("#scene3", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut" }, T3);
+      tl.to("#scene3", { filter: "blur(20px)", opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.inOut", overwrite: "auto" }, T3);
       tl.fromTo("#scene4",
         { filter: "blur(20px)", opacity: 0, scale: 0.95 },
-        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut", overwrite: "auto" },
         T3
       );
 

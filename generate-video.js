@@ -100,32 +100,32 @@ export async function generateVideo(promptText, logCallback = console.log) {
   const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
   
   const systemInstruction = `
-You are a professional video storyboard scriptwriter. You take a user's prompt or script and expand it into a structured storyboard config for a 15-second tech-style promo video.
-The video uses a dark, tech-security dashboard theme with 4 visual beats:
-- Beat 1 (Hook): A punchy hook question or headline.
-- Beat 2 (Problem/Stat Comparison): A stats readout with a count-up number and comparison rows (left column and right column, e.g. options, costs, or statistics).
-- Beat 3 (Solution/Action): A simulation of typing an input query/field and displaying a secure/verified result.
-- Beat 4 (CTA): Brand name, CTA button, and website URL.
+You are a professional video storyboard scriptwriter. You take a user's prompt or script and expand it into a structured storyboard config for a fast-paced AI News Short video.
+The video uses a high-engagement, dark tech aesthetic (obsidian slate background, neon highlights) with 4 visual beats:
+- Beat 1 (Hook): A punchy hook question or headline over a full-screen zooming screenshot of the website.
+- Beat 2 (Problem/Stat Comparison): A full-screen scrolling screenshot overlayed with a sleek glassmorphic stat card containing a large count-up number and key comparison rows.
+- Beat 3 (Solution/Action): A full-screen screenshot doing a focal zoom on a specific detail, showing a verified badge and detail status.
+- Beat 4 (CTA): Brand name, CTA button, and website URL over a clean tech outro background.
 
-Your task is to creatively adapt the user's script or product/service topic to this technical layout structure so that the visuals match the script's theme.
+Your task is to creatively adapt the user's script or product/service topic to this structure so that the visuals match the script's theme.
 For example, if the user script is about eSIM:
 - Beat 1 Hook: Headline could be "OVERPAYING FOR ROAMING?" (highlight "ROAMING?").
 - Beat 2: Stats readout could show "90" (stat) "%" (unit) "SAVINGS ON ROAMING" (label), and the rows could compare traditional roaming costs vs eSIM costs.
-- Beat 3: Show entering "Scan QR Code" or "Destination" in the input, and displaying "Instant Mobile Data Active" or the price as the output.
+- Beat 3: Detail zoom showing input query/focus "Instant Mobile Data" and status "ACTIVE" / price.
 - Beat 4: Show the website URL "esim.promosaver.net" and CTA button.
 
 Guidelines:
-1. Output language: Must match the language of the user's script (Vietnamese or English).
+1. Output language: You MUST write the script and all on-screen text in English, regardless of the user's input language. If the user prompt is in Vietnamese or another language, translate it to English first.
 2. Voiceover fields:
-   - "voiceover" must contain the full narration. If the user provided a complete script, use their text exactly.
+   - "voiceover" must contain the full narration. If the user provided a complete script, use their text exactly (or translated to English).
    - "beat1_vo", "beat2_vo", "beat3_vo", "beat4_vo" must break the voiceover down into 4 beats. The concatenation of these 4 fields must match "voiceover" exactly (with standard spacing).
 3. On-screen texts:
    - Keep titles short (2-5 words) to avoid wrapping/overlap.
    - "beat1.highlight" must be a word that exists exactly within "beat1.title".
-   - "beat2.rows" must contain 5-7 rows. The "email" property is the left column and "leak" is the right column of the row. Adapt them to fit the topic (e.g. mock email addresses, costs, categories).
-   - "beat3.email" is the typed input (e.g. search query, email, phone number).
-   - "beat3.hash" is the output value/result (e.g. hash string, price, message).
-   - "beat3.badge" is the verified badge text.
+   - "beat2.rows" must contain 5-7 rows. The "email" property is the left column (e.g. eSIM Provider / option) and "leak" is the right column (e.g. price / status). Adapt them to fit the topic.
+   - "beat3.email" is the focused feature/input text.
+   - "beat3.hash" is the detail/value/result text.
+   - "beat3.badge" is the verified badge text (e.g. "ACTIVE", "VERIFIED").
    - "beat4.header" is the brand/company name. "beat4.buttonText" is the CTA button text. "beat4.url" is the website URL.
 All fields are required and must match this structure.
 `;
@@ -220,8 +220,10 @@ All fields are required and must match this structure.
   const tempMp3 = path.join(assetsDir, "temp_narration.mp3");
   const finalWav = path.join(assetsDir, "narration.wav");
   
+  const pythonCmd = process.platform === "win32" ? "python" : "python3";
+
   // Run python tts.py script
-  execSync(`python3 tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`, { stdio: 'pipe', timeout: 120000 });
+  execSync(`${pythonCmd} tts.py "${storyboard.voiceover.replace(/"/g, '\\"')}" "${tempMp3}" "${voice}"`, { stdio: 'pipe', timeout: 120000 });
   
   // Convert to proper WAV via ffmpeg
   await log("🎵 Đang chuyển đổi định dạng âm thanh... (Converting audio format)");
@@ -232,7 +234,7 @@ All fields are required and must match this structure.
   
   // 3. Transcribe audio to get word-level timestamps using local Whisper
   await log("✍️ Đang chuyển giọng nói thành phụ đề (Whisper)...\n⏳ Lần đầu tải model ~1 phút, lần sau rất nhanh!");
-  execSync(`python3 transcribe.py "${finalWav}" ${lang}`, { stdio: 'pipe', timeout: 300000 });
+  execSync(`${pythonCmd} transcribe.py "${finalWav}" ${lang}`, { stdio: 'pipe', timeout: 300000 });
   
   // Verify transcript.json exists
   const transcriptJsonPath = path.join(process.cwd(), "transcript.json");
@@ -342,7 +344,7 @@ All fields are required and must match this structure.
     // Run hyperframes render
     const child = spawn("npx", [
       "--yes", "hyperframes@0.6.76", "render",
-      "--output", outputPath,
+      "--output", `"${outputPath}"`,
       "--quality", "standard"
     ], { shell: true });
     
@@ -371,7 +373,7 @@ All fields are required and must match this structure.
 
 // Standalone execution wrapper
 if (process.argv[1] && process.argv[1].endsWith("generate-video.js")) {
-  const prompt = process.argv[2] || "Hãy bảo mật email của bạn định kỳ, quét thông tin rò rỉ tại check.security.vn";
+  const prompt = process.argv[2] || "Traveling abroad without eSIM? You're probably overpaying for roaming right now. esim.promosaver.net helps you compare eSIM deals from different providers.";
   generateVideo(prompt)
     .then(p => console.log(`SUCCESS: Video saved to ${p}`))
     .catch(err => console.error("FAILED:", err));
