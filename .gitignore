@@ -8,4 +8,7 @@ assets/narration.wav
 transcript.json
 .DS_Store
 .thumbnails/
-.agents/
+.agents/*
+!.agents/skills/
+.agents/skills/*
+!.agents/skills/ai-news-shorts/
