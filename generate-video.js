@@ -45,6 +45,40 @@ function findWordIndex(words, searchWord, startIndex) {
 }
 
 /**
+ * Update attributes of an HTML tag matching a specific ID.
+ */
+function updateHtmlTag(html, id, attrs) {
+  const idRegex = new RegExp(`id=["']${id}["']`);
+  const match = html.match(idRegex);
+  if (!match) {
+    console.warn(`Tag with id="${id}" not found in HTML.`);
+    return html;
+  }
+  const idIndex = match.index;
+  const startIdx = html.lastIndexOf('<', idIndex);
+  if (startIdx === -1) return html;
+  const endIdx = html.indexOf('>', idIndex);
+  if (endIdx === -1) return html;
+
+  let tagString = html.substring(startIdx, endIdx + 1);
+
+  for (const [key, val] of Object.entries(attrs)) {
+    const attrRegex = new RegExp(`(\\b${key}\\s*=\\s*["'])([^"']*)(["'])`, 'i');
+    if (attrRegex.test(tagString)) {
+      tagString = tagString.replace(attrRegex, `$1${val}$3`);
+    } else {
+      if (tagString.endsWith('/>')) {
+        tagString = tagString.substring(0, tagString.length - 2) + ` ${key}="${val}"/>`;
+      } else {
+        tagString = tagString.substring(0, tagString.length - 1) + ` ${key}="${val}">`;
+      }
+    }
+  }
+
+  return html.substring(0, startIdx) + tagString + html.substring(endIdx + 1);
+}
+
+/**
  * Main orchestration function
  */
 export async function generateVideo(promptText, logCallback = console.log) {
@@ -330,6 +364,23 @@ All fields are required and must match this structure.
     path.join(process.cwd(), "variables.js"),
     `window.__variables = ${JSON.stringify(variables, null, 2)};`
   );
+
+  // 6.5. Statically update index.html attributes for hyperframes render to read correctly
+  await log("📝 Đang cập nhật tệp cấu hình index.html... (Updating index.html attributes)");
+  const indexHtmlPath = path.join(process.cwd(), "index.html");
+  if (fs.existsSync(indexHtmlPath)) {
+    let indexHtml = fs.readFileSync(indexHtmlPath, "utf8");
+    
+    indexHtml = updateHtmlTag(indexHtml, "root", { "data-duration": totalDuration.toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "narration", { "data-duration": (totalDuration - 0.3).toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "scene1", { "data-duration": s1_duration.toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "scene2", { "data-start": s2_start.toFixed(1), "data-duration": s2_duration.toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "scene3", { "data-start": s3_start.toFixed(1), "data-duration": s3_duration.toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "scene4", { "data-start": s4_start.toFixed(1), "data-duration": s4_duration.toFixed(1) });
+    indexHtml = updateHtmlTag(indexHtml, "captions", { "data-duration": totalDuration.toFixed(1) });
+    
+    fs.writeFileSync(indexHtmlPath, indexHtml, "utf8");
+  }
   
   // 7. Render video to MP4 using npm run render (hyperframes render)
   await log("🎬 Đang dựng video MP4 (Rendering)...\n⏳ Quá trình này mất 1-3 phút, vui lòng chờ!");
