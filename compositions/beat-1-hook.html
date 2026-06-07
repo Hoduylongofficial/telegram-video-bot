@@ -18,10 +18,64 @@
         height: 1920px;
         overflow: hidden;
         z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .browser-mockup {
+        width: 920px;
+        height: 1100px;
+        background: #0D0E12;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        z-index: 3;
+        transform: translateY(220px);
+      }
+      .browser-bar {
+        height: 52px;
+        background: #16171D;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        gap: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .browser-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .browser-dot.red { background: #EF4444; }
+      .browser-dot.yellow { background: #F59E0B; }
+      .browser-dot.green { background: #10B981; }
+      .browser-address {
+        flex-grow: 1;
+        height: 32px;
+        background: #0D0E12;
+        border-radius: 6px;
+        margin-left: 20px;
+        margin-right: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: monospace;
+        font-size: 14px;
+        color: #90A1B9;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .browser-content {
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden;
+        background: #0D0E12;
       }
       .web-screenshot {
-        width: 1080px;
-        height: 1920px;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         object-position: top center;
         transform: scale(1.05);
@@ -32,7 +86,7 @@
         left: 0;
         width: 1080px;
         height: 1920px;
-        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.7) 60%, rgba(13, 14, 18, 0.95) 100%);
+        background: radial-gradient(circle at center, rgba(13, 14, 18, 0.1) 0%, rgba(13, 14, 18, 0.6) 60%, rgba(13, 14, 18, 0.95) 100%);
         z-index: 2;
       }
       .content {
@@ -81,7 +135,17 @@
     </style>
 
     <div class="screenshot-bg-container" data-layout-allow-overflow>
-      <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" data-layout-allow-overflow />
+      <div class="browser-mockup">
+        <div class="browser-bar">
+          <span class="browser-dot red"></span>
+          <span class="browser-dot yellow"></span>
+          <span class="browser-dot green"></span>
+          <div class="browser-address">scan.promosaver.net</div>
+        </div>
+        <div class="browser-content">
+          <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" data-layout-allow-overflow />
+        </div>
+      </div>
       <div class="scrim"></div>
     </div>
     <div class="glow-ring" data-layout-allow-overflow></div>
@@ -125,6 +189,12 @@
           headlineEl.appendChild(span);
           headlineEl.appendChild(document.createTextNode(" "));
         });
+      }
+
+      // Populate mock browser address dynamically
+      const addressEl = document.querySelector("#beat-1-hook .browser-address");
+      if (addressEl) {
+        addressEl.textContent = (window.__variables && window.__variables.beat4 && window.__variables.beat4.url) || "scan.promosaver.net";
       }
 
       const tl = gsap.timeline({ paused: true });
