@@ -1,0 +1,65 @@
+========================================================================
+ 🤖 HƯỚNG DẪN CÁC CÂU LỆNH QUẢN LÝ TELEGRAM VIDEO BOT TRÊN UBUNTU VPS
+========================================================================
+
+Thư mục dự án mặc định trên VPS của bạn: ~/telegram-video-bot
+
+------------------------------------------------------------------------
+1. XEM LOG HOẠT ĐỘNG (THEO DÕI TIN NHẮN & TIẾN TRÌNH DỰNG VIDEO)
+------------------------------------------------------------------------
+# Xem log thời gian thực của bot:
+pm2 logs video-bot
+
+# Xem log và hiển thị sẵn 50 dòng gần nhất:
+pm2 logs video-bot --lines 50
+
+# Xem trạng thái danh sách PM2:
+pm2 status
+
+------------------------------------------------------------------------
+2. CẬP NHẬT CODE MỚI NHẤT TỪ GITHUB
+------------------------------------------------------------------------
+# Di chuyển vào thư mục dự án, lấy code mới và khởi động lại:
+cd ~/telegram-video-bot
+git pull origin main
+
+------------------------------------------------------------------------
+3. KHỞI ĐỘNG LẠI BOT (KHI CÓ CODE MỚI)
+------------------------------------------------------------------------
+# Cách thông thường (nếu PM2 không bị lỗi):
+pm2 restart video-bot
+
+# Cách cập nhật cả biến môi trường từ file .env (nếu bạn mới chỉnh sửa file .env):
+pm2 restart video-bot --update-env
+
+------------------------------------------------------------------------
+4. SỬA LỖI PM2 KHÔNG PHẢN HỒI (LỖI "PROCESS 0 NOT FOUND")
+------------------------------------------------------------------------
+# Khi VPS bị hết RAM, tiến trình bị tắt đột ngột làm PM2 bị lỗi bộ nhớ cache.
+# Hãy chạy chuỗi lệnh này để reset sạch PM2:
+pm2 kill
+cd ~/telegram-video-bot
+pm2 start ecosystem.config.cjs
+pm2 save
+
+------------------------------------------------------------------------
+5. DỌN DẸP CÁC TIẾN TRÌNH CHẠY ẨN BỊ KẸT (NẾU CÓ)
+------------------------------------------------------------------------
+# Kiểm tra xem có tiến trình Node.js nào đang chạy ngầm không:
+ps aux | grep node
+
+# Diệt tiến trình chạy ẩn bằng ID tiến trình (PID):
+# (Thay <PID> bằng số ID hiển thị ở cột thứ 2 từ lệnh trên, ví dụ: kill -9 798)
+kill -9 <PID>
+
+# Diệt nhanh toàn bộ tiến trình node đang chạy trên VPS:
+killall -9 node
+
+------------------------------------------------------------------------
+6. KIỂM TRA TÀI NGUYÊN HỆ THỐNG (RAM & SWAP)
+------------------------------------------------------------------------
+# Kiểm tra dung lượng RAM trống và Swap (Ram ảo) trên VPS:
+free -h
+
+# Xem chi tiết file Swap đang hoạt động:
+swapon --show
