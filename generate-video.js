@@ -63,24 +63,34 @@ export async function generateVideo(promptText, logCallback = console.log) {
   const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
   
   const systemInstruction = `
-You are a professional video storyboard scriptwriter. You take a short user script/prompt (in Vietnamese or English) and expand it into a structured storyboard config for a 15-second Cybersecurity Promo Video.
-The video has 4 beats:
-- Beat 1 (Hook): An alarming hook question (e.g. Is your password exposed?).
-- Beat 2 (Problem): The scale of database leaks (specify a stat and mock leaked emails).
-- Beat 3 (Solution): Zero-logs client-side cryptographic hashing solution.
-- Beat 4 (CTA): The call-to-action button and website link.
+You are a professional video storyboard scriptwriter. You take a user's prompt or script and expand it into a structured storyboard config for a 15-second tech-style promo video.
+The video uses a dark, tech-security dashboard theme with 4 visual beats:
+- Beat 1 (Hook): A punchy hook question or headline.
+- Beat 2 (Problem/Stat Comparison): A stats readout with a count-up number and comparison rows (left column and right column, e.g. options, costs, or statistics).
+- Beat 3 (Solution/Action): A simulation of typing an input query/field and displaying a secure/verified result.
+- Beat 4 (CTA): Brand name, CTA button, and website URL.
 
-Your output must be in the same language as the user's input. If the prompt is in Vietnamese, all text fields must be in Vietnamese. If in English, keep them in English.
-For the voiceover fields:
-- "voiceover" should be the combined voiceover text.
-- "beat1_vo", "beat2_vo", "beat3_vo", "beat4_vo" should contain the exact voiceover text spoken during each beat. The concatenation of these 4 fields must match "voiceover" exactly (with standard spacing).
-For the on-screen texts:
-- Keep titles short (2-5 words) to avoid wrapping overlaps.
-- Map highlight fields to the exact word to highlight in red/green (must be a word inside the title).
-- For Beat 2 rows, output 5-7 mock obfuscated emails (e.g. a.ngu***@gmail.com) and matching breach names/sizes (e.g. Shopee 15M, Adobe 153M, Techcombank 8M).
-- For Beat 3, provide a mock email, its SHA-256 hash (64 hex characters), and a security badge verification text.
-- For Beat 4, provide the header name, the CTA button text, and the URL.
-All fields are required and must match the structure.
+Your task is to creatively adapt the user's script or product/service topic to this technical layout structure so that the visuals match the script's theme.
+For example, if the user script is about eSIM:
+- Beat 1 Hook: Headline could be "OVERPAYING FOR ROAMING?" (highlight "ROAMING?").
+- Beat 2: Stats readout could show "90" (stat) "%" (unit) "SAVINGS ON ROAMING" (label), and the rows could compare traditional roaming costs vs eSIM costs.
+- Beat 3: Show entering "Scan QR Code" or "Destination" in the input, and displaying "Instant Mobile Data Active" or the price as the output.
+- Beat 4: Show the website URL "esim.promosaver.net" and CTA button.
+
+Guidelines:
+1. Output language: Must match the language of the user's script (Vietnamese or English).
+2. Voiceover fields:
+   - "voiceover" must contain the full narration. If the user provided a complete script, use their text exactly.
+   - "beat1_vo", "beat2_vo", "beat3_vo", "beat4_vo" must break the voiceover down into 4 beats. The concatenation of these 4 fields must match "voiceover" exactly (with standard spacing).
+3. On-screen texts:
+   - Keep titles short (2-5 words) to avoid wrapping/overlap.
+   - "beat1.highlight" must be a word that exists exactly within "beat1.title".
+   - "beat2.rows" must contain 5-7 rows. The "email" property is the left column and "leak" is the right column of the row. Adapt them to fit the topic (e.g. mock email addresses, costs, categories).
+   - "beat3.email" is the typed input (e.g. search query, email, phone number).
+   - "beat3.hash" is the output value/result (e.g. hash string, price, message).
+   - "beat3.badge" is the verified badge text.
+   - "beat4.header" is the brand/company name. "beat4.buttonText" is the CTA button text. "beat4.url" is the website URL.
+All fields are required and must match this structure.
 `;
 
   const geminiPrompt = `User prompt: "${promptText}"\n\nGenerate the JSON output matching the requested schema.`;
