@@ -109,26 +109,136 @@
         font-weight: 700;
         text-transform: uppercase;
       }
-      .lock-container {
+      .browser-preview {
+        width: 100%;
+        height: 600px;
+        background: #0f172b;
+        border: 2px solid #1d293d;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+      .browser-header {
+        height: 40px;
+        background: #1d293d;
         display: flex;
+        align-items: center;
+        padding: 0 15px;
+        gap: 15px;
+      }
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .b-dot {
+        width: 10px;
+        height: 10px;
+        background: #475569;
+        border-radius: 50%;
+      }
+      .browser-address {
+        flex-grow: 1;
+        background: #030712;
+        border-radius: 6px;
+        height: 26px;
+        display: flex;
+        align-items: center;
         justify-content: center;
+        color: #90a1b9;
+        font-family: monospace;
+        font-size: 14px;
+      }
+      .browser-screen {
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow: hidden;
+        position: relative;
+      }
+      .browser-screen img {
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .panel-card {
+        background: #0f172b;
+        border: 1px solid #1d293d;
+        border-radius: 16px;
+        width: 100%;
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        position: relative;
+      }
+      .input-wrapper {
+        background: #030712;
+        border: 1px solid #1d293d;
+        border-radius: 12px;
+        height: 100px;
+        width: 100%;
+        padding: 0 30px;
+        display: flex;
         align-items: center;
         position: relative;
-        height: 180px;
-        margin-bottom: 20px;
       }
-      .lock-icon {
-        width: 160px;
-        height: 160px;
-        filter: drop-shadow(0 0 30px rgba(0, 188, 125, 0.4));
+      .input-placeholder {
+        font-family: monospace;
+        font-size: 32px;
+        color: #90a1b9;
       }
-      .key-icon {
-        width: 80px;
-        height: 80px;
-        position: absolute;
-        top: 40px;
-        left: 280px;
+      .cursor {
+        width: 4px;
+        height: 40px;
+        background: #00bc7d;
+        margin-left: 6px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .encryption-display {
+        border-top: 1px dashed rgba(144, 161, 185, 0.15);
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         opacity: 0;
+      }
+      .hash-label {
+        font-family: monospace;
+        font-size: 20px;
+        color: #90a1b9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .hash-value {
+        font-family: monospace;
+        font-size: 28px;
+        color: #f1f5f9;
+        background: #030712;
+        padding: 20px;
+        border-radius: 8px;
+        word-break: break-all;
+        border: 1px solid rgba(0, 188, 125, 0.15);
+      }
+      .status-badge {
+        background: rgba(0, 188, 125, 0.1);
+        border: 1px solid #00bc7d;
+        border-radius: 6px;
+        padding: 10px 20px;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0;
+      }
+      .status-badge span {
+        font-family: monospace;
+        font-size: 22px;
+        color: #00bc7d;
+        font-weight: 700;
+        text-transform: uppercase;
       }
       .glow {
         position: absolute;
@@ -148,10 +258,16 @@
 
     <div class="glow" data-layout-allow-overflow></div>
     
-    <div class="content">
-      <div class="lock-container">
-        <img class="lock-icon" src="capture/assets/svgs/lucide-lock.svg" alt="Lock" />
-        <img class="key-icon" src="capture/assets/svgs/lucide-key-round.svg" alt="Key" />
+    <div class="content" data-layout-allow-overflow>
+      <!-- Top Browser preview showing website secondary page/tool -->
+      <div class="browser-preview">
+        <div class="browser-header">
+          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
+          <div class="browser-address">website.com</div>
+        </div>
+        <div class="browser-screen">
+          <img class="web-screenshot" src="capture/screenshots/scroll-100.png" alt="Website Screenshot" />
+        </div>
       </div>
       
       <div class="header-text">Cryptographic Check</div>
@@ -203,17 +319,26 @@
       const badgeEl = document.querySelector("#beat-3-solution .status-badge span");
       if (badgeEl) badgeEl.textContent = vars.badge;
 
+      // Address bar text (clean domain name)
+      const addressBarEl = document.querySelector("#beat-3-solution .browser-address");
+      if (addressBarEl && window.__variables && window.__variables.beat4) {
+        addressBarEl.textContent = window.__variables.beat4.url || "website.com";
+      } else if (addressBarEl) {
+        addressBarEl.textContent = "promosaver.net";
+      }
+
       const tl = gsap.timeline({ paused: true });
 
       // Ambient glow breathing & slow dolly-out
       const animDuration = Math.max(duration - 0.4, 1);
       tl.to("#beat-3-solution .glow", { scale: 1.2, opacity: 0.2, duration: animDuration, yoyo: true, repeat: 0, ease: "sine.inOut" }, 0);
-      tl.to("#beat-3-solution .content", { scale: 0.96, duration: animDuration, ease: "sine.inOut" }, 0);
+      tl.to("#beat-3-solution .content", { scale: 0.98, duration: animDuration, ease: "sine.inOut" }, 0);
+      tl.to("#beat-3-solution .web-screenshot", { y: "-30%", duration: animDuration, ease: "power1.inOut" }, 0);
 
-      // Lock icon slide in
-      tl.from("#beat-3-solution .lock-icon", { y: 60, scale: 0.8, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, 0);
+      // Entrances
+      tl.from("#beat-3-solution .browser-preview", { y: -40, opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
       tl.from("#beat-3-solution .header-text", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
-      tl.from("#beat-3-solution .panel-card", { y: 80, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+      tl.from("#beat-3-solution .panel-card", { y: 50, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.3);
 
       // Typing simulation
       const textVal = vars.email;
@@ -240,16 +365,9 @@
 
       // Fade in encryption / hash display
       tl.to("#beat-3-solution .encryption-display", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, typingEnd);
-      
-      // key slide-in
-      tl.to("#beat-3-solution .key-icon", { opacity: 0.8, x: -60, duration: 0.6, ease: "back.out(1.2)" }, typingEnd);
-      
-      // Pulse the lock to confirm verification
-      const pulseTime = typingEnd + 0.5;
-      tl.to("#beat-3-solution .lock-icon", { scale: 1.1, filter: "drop-shadow(0 0 45px rgba(0, 188, 125, 0.75))", duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, pulseTime);
 
       // Badge snaps in
-      const badgeTime = pulseTime + 0.3;
+      const badgeTime = typingEnd + 0.4;
       tl.fromTo("#beat-3-solution .status-badge", 
         { scale: 0.8, opacity: 0 }, 
         { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 

@@ -57,6 +57,43 @@ export async function generateVideo(promptText, logCallback = console.log) {
   };
 
   await log("🤖 Khởi tạo... (Initializing generation)");
+
+  // Extract URL if present in the prompt
+  let targetUrl = null;
+  const urlRegex = /(https?:\/\/[^\s]+)/gi;
+  let urlMatch = urlRegex.exec(promptText);
+  if (urlMatch) {
+    targetUrl = urlMatch[1];
+  } else {
+    // Check for domain name patterns in the text
+    const domainRegex = /\b([a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})\b/gi;
+    let domainMatch;
+    while ((domainMatch = domainRegex.exec(promptText)) !== null) {
+      const candidate = domainMatch[1];
+      // Skip common internal words
+      if (!/^(gmail|yahoo|outlook|hotmail|example|test|secure|shield|google|npm|python|github)\./i.test(candidate)) {
+        targetUrl = "https://" + candidate;
+        break;
+      }
+    }
+  }
+
+  if (targetUrl) {
+    await log(`📸 Đang chụp ảnh giao diện trang web: ${targetUrl}...\n⏳ Quá trình này mất khoảng 15-20 giây!`);
+    try {
+      // Ensure capture directory exists
+      const captureDir = path.join(process.cwd(), "capture");
+      if (!fs.existsSync(captureDir)) {
+        fs.mkdirSync(captureDir);
+      }
+      // Execute hyperframes capture to capture screenshots and write them to capture/
+      execSync(`npx --yes hyperframes@0.6.76 capture "${targetUrl}" -o capture`, { stdio: 'pipe', timeout: 120000 });
+      await log("✅ Đã chụp giao diện trang web thành công!");
+    } catch (err) {
+      console.error("Website capture failed:", err);
+      await log("⚠️ Không thể chụp ảnh trang web trực tiếp (sẽ dùng ảnh minh họa mặc định).");
+    }
+  }
   
   // 1. Call Gemini to expand script and generate metadata variables
   await log("📝 Đang phân tích kịch bản bằng Gemini AI... (Analyzing script with Gemini AI)");

@@ -22,16 +22,46 @@
         position: relative;
         z-index: 10;
       }
-      .alert-icon {
-        width: 180px;
-        height: 180px;
-        margin-bottom: 80px;
-        filter: drop-shadow(0 0 30px rgba(255, 29, 88, 0.6));
+      .browser-preview {
+        width: 550px;
+        height: 600px;
+        background: #0f172b;
+        border: 2px solid #1d293d;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 50px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+      .browser-header {
+        height: 40px;
+        background: #1d293d;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+      }
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .b-dot {
+        width: 10px;
+        height: 10px;
+        background: #475569;
+        border-radius: 50%;
+      }
+      .browser-screen {
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow: hidden;
+      }
+      .browser-screen img {
+        width: 100%;
+        display: block;
       }
       .headline {
         font-family: sans-serif;
         font-weight: 800;
-        font-size: 80px;
+        font-size: 70px;
         line-height: 1.1;
         color: #f1f5f9;
         text-transform: uppercase;
@@ -62,7 +92,14 @@
 
     <div class="glow" data-layout-allow-overflow></div>
     <div class="content" data-layout-allow-overflow>
-      <img class="alert-icon" src="capture/assets/svgs/lucide-octagon-alert.svg" alt="Alert" />
+      <div class="browser-preview">
+        <div class="browser-header">
+          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
+        </div>
+        <div class="browser-screen">
+          <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" />
+        </div>
+      </div>
       <h1 class="headline">
         <!-- Spans generated dynamically below -->
       </h1>
@@ -104,7 +141,7 @@
       tl.to("#beat-1-hook .content", { scale: 1.05, duration: animDuration, ease: "sine.inOut" }, 0);
       
       // Entrances (Offset from t=0)
-      tl.from("#beat-1-hook .alert-icon", { y: -60, scale: 0.8, opacity: 0, duration: 0.7, ease: "back.out(1.5)" }, 0.2);
+      tl.from("#beat-1-hook .browser-preview", { y: 60, scale: 0.9, opacity: 0, duration: 0.7, ease: "back.out(1.5)" }, 0.2);
       
       // Dynamically animate words
       const words = vars.title.split(" ");

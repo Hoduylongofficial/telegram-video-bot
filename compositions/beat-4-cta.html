@@ -31,11 +31,58 @@
         text-transform: uppercase;
         margin-bottom: 80px;
       }
-      .shield-icon {
-        width: 260px;
-        height: 260px;
-        filter: drop-shadow(0 0 40px rgba(0, 188, 125, 0.5));
-        margin-bottom: 80px;
+      .browser-preview {
+        width: 100%;
+        height: 600px;
+        background: #0f172b;
+        border: 2px solid #1d293d;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 60px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+      .browser-header {
+        height: 40px;
+        background: #1d293d;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        gap: 15px;
+      }
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .b-dot {
+        width: 10px;
+        height: 10px;
+        background: #475569;
+        border-radius: 50%;
+      }
+      .browser-address {
+        flex-grow: 1;
+        background: #030712;
+        border-radius: 6px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #90a1b9;
+        font-family: monospace;
+        font-size: 14px;
+      }
+      .browser-screen {
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow: hidden;
+        position: relative;
+      }
+      .browser-screen img {
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
       .cta-button {
         background: #000000;
@@ -101,7 +148,16 @@
     <div class="content" data-layout-allow-overflow>
       <div class="header-text">CYBER-EXPOSURE SHIELD</div>
       
-      <img class="shield-icon" src="capture/assets/svgs/lucide-shield-check.svg" alt="Shield Check" />
+      <!-- Top Browser preview showing website homepage in CTA -->
+      <div class="browser-preview">
+        <div class="browser-header">
+          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
+          <div class="browser-address">website.com</div>
+        </div>
+        <div class="browser-screen">
+          <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" />
+        </div>
+      </div>
       
       <button class="cta-button">
         <span>Scan My Email Free</span>
@@ -141,6 +197,12 @@
       const urlEl = document.querySelector("#beat-4-cta .url-display");
       if (urlEl) urlEl.textContent = vars.url;
 
+      // Address bar text (clean domain name)
+      const addressBarEl = document.querySelector("#beat-4-cta .browser-address");
+      if (addressBarEl) {
+        addressBarEl.textContent = vars.url;
+      }
+
       const tl = gsap.timeline({ paused: true });
 
       // Ambient glow breathing & slow dolly-in
@@ -149,8 +211,8 @@
       tl.to("#beat-4-cta .glow-red", { x: -50, y: 30, scale: 1.1, duration: animDuration, yoyo: true, repeat: 0, ease: "sine.inOut" }, 0);
       tl.to("#beat-4-cta .content", { scale: 1.05, duration: animDuration, ease: "sine.inOut" }, 0);
 
-      // Shield Check entrance with spring/bounce
-      tl.from("#beat-4-cta .shield-icon", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(2.2)" }, 0);
+      // Browser preview entrance with spring/bounce
+      tl.from("#beat-4-cta .browser-preview", { scale: 0.9, y: 50, opacity: 0, duration: 0.8, ease: "power2.out" }, 0);
       
       // Header text fade-in
       tl.from("#beat-4-cta .header-text", { y: -30, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.4);

@@ -29,41 +29,98 @@
         text-transform: uppercase;
         margin-bottom: 20px;
       }
+      .browser-preview {
+        width: 100%;
+        height: 600px;
+        background: #0f172b;
+        border: 2px solid #1d293d;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+      .browser-header {
+        height: 40px;
+        background: #1d293d;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        gap: 15px;
+      }
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .b-dot {
+        width: 10px;
+        height: 10px;
+        background: #475569;
+        border-radius: 50%;
+      }
+      .browser-address {
+        flex-grow: 1;
+        background: #030712;
+        border-radius: 6px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #90a1b9;
+        font-family: monospace;
+        font-size: 14px;
+      }
+      .browser-screen {
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow: hidden;
+        position: relative;
+      }
+      .browser-screen img {
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .bottom-card {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
       .terminal-card {
         background: #0f172b;
         border: 1px solid #1d293d;
-        border-radius: 16px;
+        border-radius: 12px;
         width: 100%;
-        height: 700px;
-        margin-top: 40px;
-        padding: 40px;
+        height: 360px;
+        padding: 30px;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
       }
       .terminal-scroll {
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 20px;
         position: absolute;
-        width: calc(100% - 80px);
-        top: 40px;
+        width: calc(100% - 60px);
+        top: 30px;
       }
       .terminal-row {
         font-family: monospace;
-        font-size: 32px;
+        font-size: 28px;
         color: #90a1b9;
         display: flex;
         justify-content: space-between;
         border-bottom: 1px dashed rgba(144, 161, 185, 0.15);
-        padding-bottom: 12px;
+        padding-bottom: 8px;
       }
       .terminal-leak-name {
         color: #ff1d58;
         font-weight: 700;
       }
       .stat-section {
-        margin-top: auto;
+        margin-top: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -72,7 +129,7 @@
       .stat-number {
         font-family: monospace;
         font-weight: 800;
-        font-size: 130px;
+        font-size: 110px;
         color: #f1f5f9;
         line-height: 1;
         letter-spacing: -0.05em;
@@ -80,23 +137,12 @@
       }
       .stat-label {
         font-family: sans-serif;
-        font-size: 30px;
+        font-size: 26px;
         color: #90a1b9;
-        margin-top: 15px;
+        margin-top: 10px;
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-      }
-      .bg-fingerprint {
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        opacity: 0.05;
-        z-index: 1;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
       }
       .glow {
         position: absolute;
@@ -114,21 +160,34 @@
     </style>
 
     <div class="glow" data-layout-allow-overflow></div>
-    <img class="bg-fingerprint" src="capture/assets/svgs/lucide-fingerprint.svg" alt="Fingerprint" data-layout-allow-overflow />
     
     <div class="content" data-layout-allow-overflow>
-      <div>
-        <div class="header-text">Database Exposure</div>
-        <div class="terminal-card" data-layout-allow-overflow>
-          <div class="terminal-scroll">
-            <!-- Terminal rows generated dynamically below -->
-          </div>
+      <!-- Top Browser preview scrolling website -->
+      <div class="browser-preview">
+        <div class="browser-header">
+          <div class="browser-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
+          <div class="browser-address">website.com</div>
+        </div>
+        <div class="browser-screen">
+          <img class="web-screenshot" src="capture/screenshots/scroll-000.png" alt="Website Screenshot" />
         </div>
       </div>
-      
-      <div class="stat-section">
-        <div class="stat-number"><span class="counter-num">0.0</span>B</div>
-        <div class="stat-label">Compromised Indexes Loaded</div>
+
+      <!-- Bottom Card with dynamic rows and statistics -->
+      <div class="bottom-card">
+        <div>
+          <div class="header-text">Database Exposure</div>
+          <div class="terminal-card" data-layout-allow-overflow>
+            <div class="terminal-scroll">
+              <!-- Terminal rows generated dynamically below -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-section">
+          <div class="stat-number"><span class="counter-num">0.0</span>B</div>
+          <div class="stat-label">Compromised Indexes Loaded</div>
+        </div>
       </div>
     </div>
 
@@ -166,6 +225,14 @@
         statNumberEl.innerHTML = `<span class="counter-num">0.0</span>${vars.unit}`;
       }
 
+      // Address bar text (clean domain name)
+      const addressBarEl = document.querySelector("#beat-2-problem .browser-address");
+      if (addressBarEl && window.__variables && window.__variables.beat4) {
+        addressBarEl.textContent = window.__variables.beat4.url || "website.com";
+      } else if (addressBarEl) {
+        addressBarEl.textContent = "promosaver.net";
+      }
+
       const scrollEl = document.querySelector("#beat-2-problem .terminal-scroll");
       if (scrollEl) {
         scrollEl.innerHTML = "";
@@ -179,18 +246,18 @@
 
       const tl = gsap.timeline({ paused: true });
 
-      // Fingerprint rotation & Terminal dolly-in
+      // Animate the website screenshot scrolling down!
       const animDuration = Math.max(duration - 0.4, 1);
-      tl.to("#beat-2-problem .bg-fingerprint", { rotation: 30, duration: animDuration, ease: "none" }, 0);
-      tl.to("#beat-2-problem .content", { scale: 1.04, duration: animDuration, ease: "sine.inOut" }, 0);
+      tl.to("#beat-2-problem .web-screenshot", { y: "-40%", duration: animDuration, ease: "power1.inOut" }, 0);
+      tl.to("#beat-2-problem .content", { scale: 1.02, duration: animDuration, ease: "sine.inOut" }, 0);
 
       // Entrances
-      tl.from("#beat-2-problem .terminal-card", { y: 100, opacity: 0, duration: 0.7, ease: "power3.out" }, 0);
-      tl.from("#beat-2-problem .stat-section", { scale: 0.85, opacity: 0, duration: 0.6, ease: "back.out(1.2)" }, 0.3);
+      tl.from("#beat-2-problem .browser-preview", { y: -50, opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
+      tl.from("#beat-2-problem .bottom-card", { y: 50, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
 
       // Terminal list scrolling upwards
-      const scrollHeight = vars.rows.length * 56 - 450; // estimate scroll distance
-      const scrollDistance = scrollHeight > 0 ? -scrollHeight : -160;
+      const scrollHeight = vars.rows.length * 45 - 300; // estimate scroll distance
+      const scrollDistance = scrollHeight > 0 ? -scrollHeight : -120;
       tl.to("#beat-2-problem .terminal-scroll", { y: scrollDistance, duration: Math.max(animDuration - 0.3, 1), ease: "power1.inOut" }, 0.3);
 
       // Numeric count-up
